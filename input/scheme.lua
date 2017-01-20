@@ -1,12 +1,14 @@
 local Class = require (LIB_PATH .. "hump.class")
 
 local Scheme = Class{
-	up = "up",
-	down = "down",
-	right = "right",
-	left = "left",
+	up = "w",
+	down = "a",
+	right = "s",
+	left = "d",
 	horizontal = "",
-	vertical = ""
+	vertical = "",
+	action = "space",
+	cancel = "esc"
 }
 
 function Scheme:init()

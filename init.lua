@@ -13,6 +13,11 @@ function Engine:init()
 end
 
 function Engine:update(dt)
+	self.bus:post("update", { dt = dt })
+end
+
+function Engine:draw()
+	self.bus:post("draw")
 end
 
 return Engine
