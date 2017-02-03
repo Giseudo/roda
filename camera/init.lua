@@ -3,24 +3,30 @@ local HumpCamera = require (LIB_PATH .. "hump.camera")
 
 local Camera = Class{
 	bus = {},
-	humpCamera = {}
+	main = {},
+	gui = {}
 }
 
 function Camera:init(bus)
 	self.bus = bus
-	self.humpCamera = HumpCamera(0, 0)
+	self.main = HumpCamera(0, 0, 2)
+	self.gui = HumpCamera(0, 0, 1)
 
 	self.bus:subscribe("update", function(message) self:update(message) end)
 	self.bus:subscribe("render/draw", function(message) self:draw(message) end)
 end
 
 function Camera:update(message)
-	self.humpCamera:rotate(message.dt)
+	self.main:rotate(message.dt)
 end
 
 function Camera:draw()
-	self.humpCamera:draw(function ()
+	self.main:draw(function ()
 		self.bus:post("camera/draw")
+	end)
+
+	self.gui:draw(function ()
+		self.bus:post("camera/gui/draw")
 	end)
 end
 

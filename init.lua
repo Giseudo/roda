@@ -4,13 +4,15 @@ local Input = require (RODA_PATH .. "input")
 local Console = require (RODA_PATH .. "console")
 local Render = require (RODA_PATH .. "render")
 local Camera = require (RODA_PATH .. "camera")
+local Editor = require (RODA_PATH .. "editor")
 
 local Engine = Class{
 	bus = {},
 	input = {},
 	console = {},
 	render = {},
-	camera = {}
+	camera = {},
+	editor = {}
 }
 
 function Engine:init()
@@ -19,6 +21,7 @@ function Engine:init()
 	self.console = Console(self.bus)
 	self.render = Render(self.bus)
 	self.camera = Camera(self.bus)
+	self.editor = Editor(self.bus)
 end
 
 function Engine:update(dt)

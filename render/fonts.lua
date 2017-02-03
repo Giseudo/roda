@@ -8,8 +8,8 @@ local Fonts = Class{
 function Fonts:init(bus)
 	self.bus = bus
 
-	self.bus:subscribe("render/fonts/set", function (message) self:set(message) end)
-	self.bus:subscribe("render/fonts/add-image", function (message) self:addImage(message) end)
+	self.bus:subscribe("render/fonts/set", function(message) self:set(message) end)
+	self.bus:subscribe("render/fonts/add-image", function(message) self:addImage(message) end)
 end
 
 function Fonts:set(message)
