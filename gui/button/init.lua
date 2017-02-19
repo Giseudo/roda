@@ -7,11 +7,13 @@ local Button = Class{
 	disabled = false
 }
 
-function Button:init(position)
+function Button:init(position, width, height)
 	GUI.init(self)
 
 	self.position = position
-	self.texture = TextureSlice("lib/roda/assets/images/button.png", 8)
+	self.width = width
+	self.height = height
+	self.texture = TextureSlice("lib/roda/assets/images/button.png", 8, width, height)
 end
 
 function Button:draw()

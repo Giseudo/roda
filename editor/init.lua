@@ -14,7 +14,7 @@ function Editor:init(bus)
 end
 
 function Editor:draw()
-	self.label:draw()
+	--self.label:draw()
 end
 
 return Editor
