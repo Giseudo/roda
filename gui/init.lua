@@ -2,11 +2,9 @@ local Class = require (LIB_PATH .. "hump.class")
 local Vector = require (LIB_PATH .. "hump.vector")
 
 local GUI = Class{
-	position = Vector(0, 0),
-	width = 0,
-	height = 0,
-	padding = 0,
-	margin = 0,
+	position = nil,
+	padding = nil,
+	margin = nil,
 	texture = {},
 	transition = 0,
 	opacity = 0,
@@ -16,6 +14,9 @@ local GUI = Class{
 
 function GUI:init(parent)
 	self.parent = parent
+	self.position = Vector(0, 0)
+	self.padding = Vector(0, 0)
+	self.margin = Vector(0, 0)
 
 	if (self.parent) then
 		self.parent:append(self)
@@ -23,10 +24,8 @@ function GUI:init(parent)
 end
 
 function GUI:draw()
-	local offset = self.position + Vector(self.padding, self.padding)
-	
 	for i, child in pairs(self.children) do
-		child:draw(offset)
+		child:draw(self.position + self.padding)
 	end
 end
 
@@ -42,7 +41,7 @@ function GUI:remove(node)
 end
 
 function GUI:getWidth()
-	local width = 0
+	local width = self.padding.x * 2
 
 	for i, child in pairs(self.children) do
 		width = width + child:getWidth()
@@ -52,7 +51,7 @@ function GUI:getWidth()
 end
 
 function GUI:getHeight()
-	local height = 0
+	local height = self.padding.y * 2
 
 	for i, child in pairs(self.children) do
 		height = height + child:getHeight()

@@ -5,7 +5,6 @@ local GUI = require (RODA_PATH .. "gui")
 local Label = Class{
 	__includes = GUI,
 	text = "",
-	font = {},
 	font = {}
 }
 
@@ -21,6 +20,8 @@ function Label:init(text, parent)
 end
 
 function Label:draw(offset)
+	offset = offset + self.padding 
+
 	love.graphics.setFont(self.font)
 
 	love.graphics.print(
