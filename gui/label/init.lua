@@ -4,18 +4,38 @@ local GUI = require (RODA_PATH .. "gui")
 
 local Label = Class{
 	__includes = GUI,
-	text = ""
+	text = "",
+	font = {},
+	font = {}
 }
 
-function Label:init(text, x, y)
-	GUI.init(self)
-
+function Label:init(text, parent)
 	self.text = text
-	self.position = Vector(x, y)
+	self.font = love.graphics.newImageFont("lib/roda/assets/fonts/glyph.png",
+		" abcdefghijklmnopqrstuvwxyz" ..
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
+		"123456789.,!?-+/():;%&`'*#=[]\""
+	)
+
+	GUI.init(self, parent)
 end
 
-function Label:draw()
-	love.graphics.print(self.text, self.position.x, self.position.y)
+function Label:draw(offset)
+	love.graphics.setFont(self.font)
+
+	love.graphics.print(
+		self.text,
+		self.position.x + offset.x,
+		self.position.y + offset.y
+	)
+end
+
+function Label:getWidth()
+	return GUI.getWidth(self) + self.font:getWidth(self.text)
+end
+
+function Label:getHeight()
+	return GUI.getHeight(self) + self.font:getHeight()
 end
 
 return Label

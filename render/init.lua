@@ -11,20 +11,20 @@ function Render:init(bus)
 	self.bus = bus
 	self.fonts = Fonts(bus)
 
-	self.bus:post("render/fonts/add-image", {
-		name = "glyph",
-		file = "lib/roda/assets/fonts/glyph.png",
-		chars = " abcdefghijklmnopqrstuvwxyz" ..
-			"ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
-			"123456789.,!?-+/():;%&`'*#=[]\""
-	})
+	--self.bus:post("render/fonts/add-image", {
+	--	name = "glyph",
+	--	file = "lib/roda/assets/fonts/glyph.png",
+	--	chars = " abcdefghijklmnopqrstuvwxyz" ..
+	--		"ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
+	--		"123456789.,!?-+/():;%&`'*#=[]\""
+	--})
 
 	-- Change default filter to nearest neighbour
 	love.graphics.setDefaultFilter("nearest", "nearest", 0)
 
-	self.bus:post("render/fonts/set", {
-		name = "glyph"
-	})
+	--self.bus:post("render/fonts/set", {
+	--	name = "glyph"
+	--})
 end
 
 function Render:draw(message)

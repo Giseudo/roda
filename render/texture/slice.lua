@@ -39,21 +39,86 @@ function TextureSlice:init(file, slice, width, height)
 	self.quads.bottom_right = love.graphics.newQuad(slice * 2, slice * 2, slice, slice, self.image:getDimensions())
 end
 
-function TextureSlice:draw(position)
+function TextureSlice:draw(position, padding)
 	-- Top
-	love.graphics.draw(self.image, self.quads.top_left, position.x, position.y)
-	love.graphics.draw(self.image, self.quads.top, position.x + self.slice, position.y, 0, self.width / self.slice, 1)
-	love.graphics.draw(self.image, self.quads.top_right, position.x + self.width + self.slice, position.y)
+	love.graphics.draw(
+		self.image,
+		self.quads.top_left,
+		position.x - self.slice,
+		position.y - self.slice
+	)
+
+	love.graphics.draw(
+		self.image,
+		self.quads.top,
+		position.x,
+		position.y - self.slice,
+		0,
+		(self.width + padding * 2) / self.slice, 1
+	)
+
+	love.graphics.draw(
+		self.image,
+		self.quads.top_right,
+		position.x + self.width + (padding * 2),
+		position.y - self.slice
+	)
 
 	-- Middle
-	love.graphics.draw(self.image, self.quads.middle_left, position.x, position.y + self.slice, 0, 1, self.height / self.slice)
-	love.graphics.draw(self.image, self.quads.middle, position.x + self.slice, position.y + self.slice, 0, self.width / self.slice, self.height / self.slice)
-	love.graphics.draw(self.image, self.quads.middle_right, position.x + self.width + self.slice, position.y + self.slice, 0, 1, self.height / self.slice)
+	love.graphics.draw(
+		self.image,
+		self.quads.middle_left,
+		position.x - self.slice,
+		position.y,
+		0,
+		1,
+		(self.height + padding * 2) / self.slice
+	)
+
+	love.graphics.draw(
+		self.image,
+		self.quads.middle,
+		position.x,
+		position.y,
+		0,
+		(self.width + padding * 2) / self.slice,
+		(self.height + padding * 2) / self.slice
+	)
+
+	love.graphics.draw(
+		self.image,
+		self.quads.middle_right,
+		position.x + self.width + (padding * 2),
+		position.y,
+		0,
+		1,
+		(self.height + padding * 2) / self.slice
+	)
 
 	-- Bottom
-	love.graphics.draw(self.image, self.quads.bottom_left, position.x, position.y + self.height + self.slice)
-	love.graphics.draw(self.image, self.quads.bottom, position.x + self.slice, position.y + self.height + self.slice, 0, self.width / self.slice, 1)
-	love.graphics.draw(self.image, self.quads.bottom_right, position.x + self.width + self.slice, position.y + self.height + self.slice)
+	love.graphics.draw(
+		self.image,
+		self.quads.bottom_left,
+		position.x - self.slice,
+		position.y + self.height + (padding * 2)
+	)
+
+	love.graphics.draw(
+		self.image,
+		self.quads.bottom,
+		position.x,
+		position.y + self.height + (padding * 2),
+		0,
+		(self.width + padding * 2) / self.slice,
+		1
+	)
+
+	love.graphics.draw(
+		self.image,
+		self.quads.bottom_right,
+		position.x + self.width + (padding * 2),
+		position.y + self.height + (padding * 2)
+	)
 end
 
 return TextureSlice

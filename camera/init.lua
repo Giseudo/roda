@@ -17,7 +17,7 @@ function Camera:init(bus)
 end
 
 function Camera:update(message)
-	self.main:rotate(message.dt)
+	--self.main:rotate(message.dt)
 end
 
 function Camera:draw()

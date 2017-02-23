@@ -16,4 +16,12 @@ end
 function Texture:draw()
 end
 
+function Texture:setWidth(width)
+	self.width = width
+end
+
+function Texture:setHeight(height)
+	self.height = height
+end
+
 return Texture
