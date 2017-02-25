@@ -1,35 +1,34 @@
 local Class = require (LIB_PATH .. "hump.class")
+local Tiny = require (LIB_PATH .. "tiny.tiny")
 local MessageBus = require (RODA_PATH .. "message-bus")
-local Input = require (RODA_PATH .. "input")
-local Console = require (RODA_PATH .. "console")
-local Render = require (RODA_PATH .. "render")
-local Camera = require (RODA_PATH .. "camera")
-local Editor = require (RODA_PATH .. "editor")
+local UpdateSystem = require (RODA_PATH .. "systems.update")
+local DrawSystem = require (RODA_PATH .. "systems.draw")
+local Player = require (RODA_PATH .. "entities.player")
 
-local Engine = Class{
-	bus = {},
-	input = {},
-	console = {},
-	render = {},
-	camera = {},
-	editor = {}
-}
+local Engine = Class{}
 
 function Engine:init()
+	local player = Player()
+
+	-- Create message bus
 	self.bus = MessageBus()
-	self.input = Input(self.bus)
-	self.console = Console(self.bus)
-	self.render = Render(self.bus)
-	self.camera = Camera(self.bus)
-	self.editor = Editor(self.bus)
+
+	-- Create world
+	self.world = Tiny.world(
+		UpdateSystem,
+		DrawSystem,
+		player
+	)
 end
 
 function Engine:update(dt)
-	self.bus:post("update", { dt = dt })
+	UpdateSystem:update(dt)
+	--self.bus:post("update", { dt = dt })
 end
 
 function Engine:draw()
-	self.render:draw()
+	DrawSystem:update(love.timer.getDelta())
+	--self.bus:post("draw")
 end
 
 return Engine
