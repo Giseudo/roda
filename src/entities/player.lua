@@ -5,6 +5,7 @@ local Player = Class{}
 
 function Player:init(x, y)
 	self.position = Vector(x, y)
+	self.sprite = Sprite("lib/roda/assets/images/2b.png", 0, 0, 32, 32)
 	self.sprite = Sprite("lib/roda/assets/images/velvet.png", 0, 0, 32, 32)
 end
 
