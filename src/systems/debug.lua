@@ -1,9 +1,21 @@
 local Tiny = require (LIB_PATH .. "tiny.tiny")
-local DebugSystem = Tiny.processingSystem()
+local DebugSystem = Tiny.system()
 
-DebugSystem.filter = Tiny.requireAll("sprite", "transform")
+function DebugSystem:new(bus)
+	self.bus = bus
+	self.filter = Tiny.requireAll("sprite", "transform")
 
-function DebugSystem:process(e, dt)
+
+	return self
+end
+
+function DebugSystem:onAdd(e, dt)
+	self.bus:register("draw", function (dt)
+		self:draw(e, dt)
+	end)
+end
+
+function DebugSystem:draw(e, dt)
 	love.graphics.rectangle(
 		"line",
 		e.transform.position.x - e.sprite.width / 2,

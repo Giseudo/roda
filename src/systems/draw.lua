@@ -1,9 +1,20 @@
 local Tiny = require (LIB_PATH .. "tiny.tiny")
-local DrawSystem = Tiny.processingSystem()
+local DrawSystem = Tiny.system()
 
-DrawSystem.filter = Tiny.requireAll("sprite", "transform")
+function DrawSystem:new(bus)
+	self.bus = bus
+	self.filter = Tiny.requireAll("sprite", "transform")
 
-function DrawSystem:process(e, dt)
+	return self
+end
+
+function DrawSystem:onAdd(e)
+	self.bus:register("draw", function (dt)
+		self:draw(e, dt)
+	end)
+end
+
+function DrawSystem:draw(e, dt)
 	love.graphics.draw(
 		e.sprite.image,
 		e.sprite.quad,
