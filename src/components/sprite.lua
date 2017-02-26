@@ -1,19 +1,27 @@
 local Class = require (LIB_PATH .. "hump.class")
-local Sprite = Class{}
+local Sprite = Class{
+	frame = 0
+}
 
-function Sprite:init(image, x, y, w, h)
+function Sprite:init(image, width, height, frame)
 	self.image = love.graphics.newImage(image)
-	self.width = w
-	self.height = h
-	self.quad = love.graphics.newQuad(x, y, w, h, self.image:getDimensions())
+	self.width = width
+	self.height = height
+	self:setFrame(frame)
 end
 
 function Sprite:draw(dt, position)
-	love.graphics.draw(
-		self.image,
-		self.quad,
-		position.x - self.width / 2,
-		position.y - self.height / 2
+end
+
+function Sprite:setFrame(frame)
+	self.frame = frame
+
+	self.quad = love.graphics.newQuad(
+		frame * self.width,
+		0,
+		self.width,
+		self.height,
+		self.image:getDimensions()
 	)
 end
 
