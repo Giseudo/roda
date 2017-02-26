@@ -12,12 +12,6 @@ local GravitySystem = require (RODA_PATH .. "systems.gravity")
 local JumpSystem = require (RODA_PATH .. "systems.jump")
 local AnimationSystem = require (RODA_PATH .. "systems.animation")
 
--- Entities
-local Player = require (RODA_PATH .. "entities.2b")
-
--- Components
-local Sprite = require (RODA_PATH .. "components.sprite")
-
 local Engine = Class{}
 
 function Engine:init()
@@ -34,12 +28,6 @@ function Engine:init()
 		AnimationSystem,
 		DebugSystem
 	)
-
-	local player = Player(Vector(0, 0))
-
-	-- Add entities
-	self.world:add(player)
-	self.world:refresh()
 end
 
 function Engine:update(dt)
