@@ -1,6 +1,7 @@
 local Class = require (LIB_PATH .. "hump.class")
 local Vector = require (LIB_PATH .. "hump.vector")
 local Tiny = require (LIB_PATH .. "tiny.tiny")
+local Camera = require (LIB_PATH .. "hump.camera")
 
 -- Systems
 local UpdateSystem = require (RODA_PATH .. "systems.update")
@@ -19,11 +20,9 @@ local Sprite = require (RODA_PATH .. "components.sprite")
 
 local Engine = Class{}
 
-function Engine:init(camera)
-	love.graphics.setDefaultFilter("nearest", "nearest", 0)
-
+function Engine:init()
 	-- Create camera
-	self.camera = camera 
+	self.camera = Camera(0, 0, 2)
 
 	-- Create world
 	self.world = Tiny.world(

@@ -8,11 +8,11 @@ PlayerSystem.filter = Tiny.requireAll("input", "transform", "rigidbody")
 
 function PlayerSystem:process(e, dt)
 	if love.keyboard.isDown("left") then
-		e.transform:translate(Vector(200, 0), dt)
+		e.transform:translate(Vector(-200, 0), dt)
 	end
 
 	if love.keyboard.isDown("right") then
-		e.transform:translate(Vector(-200, 0), dt)
+		e.transform:translate(Vector(200, 0), dt)
 	end
 end
 

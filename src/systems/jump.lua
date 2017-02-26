@@ -8,7 +8,7 @@ JumpSystem.filter = Tiny.requireAll("input", "transform", "rigidbody")
 
 function JumpSystem:process(e, dt)
 	if e.rigidbody:isGrounded() and e.input:isJumping() then
-		e.transform:translate(Vector(0, 1000), dt)
+		e.transform:translate(Vector(0, -1000), dt)
 	end
 end
 

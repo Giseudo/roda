@@ -6,7 +6,7 @@ GravitySystem.filter = Tiny.requireAll("transform", "rigidbody")
 
 function GravitySystem:process(e, dt)
 	if e.rigidbody.kinematic == false and e.rigidbody.gravity then
-		e.transform:translate(Vector(0, -9.81), dt)
+		e.transform:translate(Vector(0, 9.81), dt)
 	end
 end
 
