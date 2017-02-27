@@ -8,6 +8,7 @@ function Velvet:init(position)
 	self.transform = Transform(position)
 	self.sprite = Sprite("lib/roda/assets/images/Velvet.png", 32, 32, 0)
 	self.rigidbody = Rigidbody()
+	self.rigidbody.kinematic = true
 end
 
 return Velvet

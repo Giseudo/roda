@@ -4,27 +4,23 @@ local PlayerSystem = Tiny.system()
 
 function PlayerSystem:new(bus)
 	self.bus = bus
-	self.filter = Tiny.requireAll("input", "transform", "rigidbody")
+	self.filter = Tiny.requireAll("device", "transform", "rigidbody")
 
 	return self
 end
 
 function PlayerSystem:onAdd(e)
-	self.bus:register("update", function (dt)
-		self:update(e, dt)
+	self.bus:register("input/key-down/left", function ()
+		self.bus:emit("physics/translate", e, Vector(-200, 0))
+	end)
+
+	self.bus:register("input/key-down/right", function ()
+		self.bus:emit("physics/translate", e, Vector(200, 0))
+	end)
+
+	self.bus:register("input/key-down/jump", function ()
+		self.bus:emit("physics/jump", e, Vector(0, -200))
 	end)
 end
-
--- Should subscribe to input system
-function PlayerSystem:update(e, dt)
-	if love.keyboard.isDown("left") then
-		e.transform:translate(Vector(-200, 0), dt)
-	end
-
-	if love.keyboard.isDown("right") then
-		e.transform:translate(Vector(200, 0), dt)
-	end
-end
-
 
 return PlayerSystem

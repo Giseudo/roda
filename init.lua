@@ -5,14 +5,12 @@ local Signal = require (LIB_PATH .. "hump.signal")
 local Tiny = require (LIB_PATH .. "tiny.tiny")
 
 local Engine = Class{
+	bus = Signal(),
+	world = Tiny.world(),
 	systems = {}
 }
 
 function Engine:init()
-	self.camera = Camera(0, 0, 2)
-	self.bus = Signal()
-	self.world = Tiny.world()
-
 	self.bus:register("system/add", function(name, system)
 		self.systems[name] = system
 		self.world:add(system)
@@ -32,9 +30,7 @@ end
 function Engine:draw()
 	local dt = love.timer.getDelta()
 
-	self.camera:draw(function ()
-		self.bus:emit("draw", dt)
-	end)
+	self.bus:emit("draw", dt)
 end
 
 return Engine

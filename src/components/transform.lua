@@ -14,12 +14,4 @@ function Transform:init(position, scale, rotation, node)
 	self.parent = node
 end
 
-function Transform:translate(velocity, dt)
-	self.position = self.position + (velocity * dt)
-end
-
-function Transform:translateTo(position, speed, dt)
-	
-end
-
 return Transform
