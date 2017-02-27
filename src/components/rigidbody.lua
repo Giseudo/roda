@@ -5,10 +5,14 @@ local Rigidbody = Class{
 	mass = 0,
 	kinematic = false,
 	gravity = true,
+	width = 0,
+	height = 0,
 	velocity = Vector(0, 0)
 }
 
-function Rigidbody:init()
+function Rigidbody:init(width, height)
+	self.width = width
+	self.height = height
 end
 
 function Rigidbody:isGrounded()

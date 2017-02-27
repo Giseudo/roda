@@ -9,9 +9,10 @@ local B2 = Class{}
 function B2:init(position)
 	self.transform = Transform(position)
 	self.sprite = Sprite("lib/roda/assets/images/B2.png", 32, 32, 0)
-	self.rigidbody = Rigidbody()
+	self.rigidbody = Rigidbody(32, 32)
 	self.device = Device()
 	self.animator = Animator("idle", 0, 3, 0.3)
+	--self.rigidbody.kinematic = true
 end
 
 return B2

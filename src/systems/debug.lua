@@ -15,7 +15,7 @@ function DebugSystem:onAdd(e, dt)
 end
 
 function DebugSystem:draw(e, dt)
-	love.graphics.setColor(0, 255, 0, 255)
+	love.graphics.setColor(255, 0, 255, 150)
 	love.graphics.rectangle(
 		"line",
 		e.transform.position.x - e.sprite.width / 2,

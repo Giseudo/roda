@@ -10,9 +10,9 @@ function JumpSystem:new(bus)
 end
 
 function JumpSystem:onAdd(e)
-	self.bus:register("physics/jump", function (e, velocity)
-		if e.rigidbody:isGrounded() then
-			self.bus:emit("physics/translate", e, velocity)
+	self.bus:register("physics/jump", function (entity, velocity)
+		if e.rigidbody:isGrounded() and e == entity then
+			self.bus:emit("physics/translate", entity, velocity)
 		end
 	end)
 end
