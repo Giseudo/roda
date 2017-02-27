@@ -47,12 +47,12 @@ end
 function PhysicsSystem:translate(e, velocity)
 	local actualX, actualY = self.bump:move(
 		e,
-		e.transform.position.x + velocity.x * love.timer.getDelta(),
-		e.transform.position.y + velocity.y * love.timer.getDelta()
+		(e.transform.position.x - e.rigidbody.width / 2) + velocity.x * love.timer.getDelta(),
+		(e.transform.position.y - e.rigidbody.height / 2) + velocity.y * love.timer.getDelta()
 	)
 
-	e.transform.position.x = actualX
-	e.transform.position.y = actualY
+	e.transform.position.x = actualX + e.rigidbody.width / 2
+	e.transform.position.y = actualY + e.rigidbody.height / 2
 end
 
 function PhysicsSystem:translateTo(e, position)
