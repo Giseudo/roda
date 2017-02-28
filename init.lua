@@ -30,6 +30,7 @@ end
 function Engine:draw()
 	local dt = love.timer.getDelta()
 
+	love.graphics.clear(100, 100, 100, 255)
 	self.bus:emit("draw", dt)
 end
 

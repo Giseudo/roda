@@ -34,14 +34,16 @@ function PhysicsSystem:onAdd(e)
 		self:translate(entity, velocity)
 	end)
 
-	self.bus:register("scene/draw", function (dt)
-		love.graphics.setColor(0, 255, 0, 150)
-		love.graphics.rectangle(
-			"line",
-			self.bump:getRect(e)
-		)
-		love.graphics.setColor(255, 255, 255, 255)
-	end)
+	if self.debug then
+		self.bus:register("scene/draw", function (dt)
+			love.graphics.setColor(0, 255, 0, 150)
+			love.graphics.rectangle(
+				"line",
+				self.bump:getRect(e)
+			)
+			love.graphics.setColor(255, 255, 255, 255)
+		end)
+	end
 end
 
 function PhysicsSystem:translate(e, velocity)

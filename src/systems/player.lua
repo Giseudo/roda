@@ -11,15 +11,15 @@ end
 
 function PlayerSystem:onAdd(e)
 	self.bus:register("input/key-down/left", function ()
-		self.bus:emit("physics/translate", e, Vector(-300, 0))
+		self.bus:emit("physics/translate", e, Vector(-200, 0))
 	end)
 
 	self.bus:register("input/key-down/right", function ()
-		self.bus:emit("physics/translate", e, Vector(300, 0))
+		self.bus:emit("physics/translate", e, Vector(200, 0))
 	end)
 
 	self.bus:register("input/key-down/jump", function ()
-		self.bus:emit("physics/jump", e, Vector(0, -1200))
+		self.bus:emit("physics/jump", e, Vector(0, -600))
 	end)
 end
 
