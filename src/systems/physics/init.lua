@@ -34,16 +34,15 @@ function PhysicsSystem:onAdd(e)
 		self:translate(entity, velocity)
 	end)
 
-	if self.debug then
-		self.bus:register("scene/draw", function (dt)
-			love.graphics.setColor(0, 255, 0, 150)
-			love.graphics.rectangle(
-				"line",
-				self.bump:getRect(e)
-			)
-			love.graphics.setColor(255, 255, 255, 255)
-		end)
-	end
+	self.bus:register("physics/debug", function (value)
+		self.debug = value
+	end)
+
+	self.bus:register("scene/draw", function (dt)
+		if (self.debug) then
+			self:drawDebug(e, dt)
+		end
+	end)
 end
 
 function PhysicsSystem:translate(e, velocity)
@@ -59,6 +58,15 @@ end
 
 function PhysicsSystem:translateTo(e, position)
 	
+end
+
+function PhysicsSystem:drawDebug(e, dt)
+	love.graphics.setColor(0, 255, 0, 150)
+	love.graphics.rectangle(
+		"line",
+		self.bump:getRect(e)
+	)
+	love.graphics.setColor(255, 255, 255, 255)
 end
 
 return PhysicsSystem

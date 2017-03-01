@@ -10,7 +10,7 @@ function SceneSystem:new(bus)
 end
 
 function SceneSystem:onAdd(e)
-	self.bus:register("draw", function(dt)
+	self.bus:register("render/draw", function(dt)
 		self:draw(e, dt)
 	end)
 end

@@ -16,6 +16,13 @@ end
 function RenderSystem:onAdd(e)
 	self.bus:register("scene/draw", function (dt)
 		self:draw(e, dt)
+		if self.debug then
+			self:drawDebug(e, dt)
+		end
+	end)
+
+	self.bus:register("render/debug", function (value)
+		self.debug = value
 	end)
 end
 
@@ -26,6 +33,18 @@ function RenderSystem:draw(e, dt)
 		e.transform.position.x - e.sprite.width / 2,
 		e.transform.position.y - e.sprite.height / 2
 	)
+end
+
+function RenderSystem:drawDebug(e, dt)
+	love.graphics.setColor(255, 0, 255, 150)
+	love.graphics.rectangle(
+		"line",
+		e.transform.position.x - e.sprite.width / 2,
+		e.transform.position.y - e.sprite.height / 2,
+		e.sprite.width,
+		e.sprite.height
+	)
+	love.graphics.setColor(255, 255, 255, 255)
 end
 
 
