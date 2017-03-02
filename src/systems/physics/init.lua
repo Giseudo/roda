@@ -14,6 +14,10 @@ function PhysicsSystem:new(bus)
 	self.bus:emit("system/add", "jump", JumpSystem:new(self.bus))
 	self.bus:emit("system/add", "gravity", GravitySystem:new(self.bus))
 
+	self.bus:register("physics/debug", function (value)
+		self.debug = value
+	end)
+
 	return self
 end
 
@@ -34,11 +38,7 @@ function PhysicsSystem:onAdd(e)
 		self:translate(entity, velocity)
 	end)
 
-	self.bus:register("physics/debug", function (value)
-		self.debug = value
-	end)
-
-	self.bus:register("scene/draw", function (dt)
+	self.bus:register("scene/debug/draw", function (dt)
 		if (self.debug) then
 			self:drawDebug(e, dt)
 		end

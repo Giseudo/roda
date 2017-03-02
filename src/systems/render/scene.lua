@@ -18,6 +18,7 @@ end
 function SceneSystem:draw(e, dt)
 	e.camera:draw(function()
 		self.bus:emit("scene/draw", dt)
+		self.bus:emit("scene/debug/draw", dt)
 	end)
 end
 

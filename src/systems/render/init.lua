@@ -10,19 +10,21 @@ function RenderSystem:new(bus)
 	self.bus:emit("system/add", "animation", AnimationSystem:new(self.bus))
 	self.bus:emit("system/add", "scene", SceneSystem:new(self.bus))
 
+	self.bus:register("render/debug", function (value)
+		self.debug = value
+	end)
+
 	return self
 end
 
 function RenderSystem:onAdd(e)
 	self.bus:register("scene/draw", function (dt)
 		self:draw(e, dt)
+	end)
+	self.bus:register("scene/debug/draw", function (dt)
 		if self.debug then
 			self:drawDebug(e, dt)
 		end
-	end)
-
-	self.bus:register("render/debug", function (value)
-		self.debug = value
 	end)
 end
 
