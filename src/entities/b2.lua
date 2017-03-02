@@ -11,7 +11,7 @@ function B2:init(position)
 	self.sprite = Sprite("lib/roda/assets/images/B2.png", 32, 32, 0)
 	self.rigidbody = Rigidbody(16, 32)
 	self.device = Device()
-	self.animator = Animator("idle", 0, 6, 0.2)
+	self.animator = Animator("idle", 0, 6, 0.1)
 	--self.rigidbody.kinematic = true
 end
 
