@@ -30,6 +30,15 @@ function InputSystem:update(e, dt)
 	if love.keyboard.isDown(e.device.jump) then
 		self.bus:emit("input/key-down/jump")
 	end
+
+	function love.keyreleased(key)
+		if e.device.left == key then
+			self.bus:emit("input/key-released/left")
+		end
+		if e.device.right == key then
+			self.bus:emit("input/key-released/right")
+		end
+	end
 end
 
 

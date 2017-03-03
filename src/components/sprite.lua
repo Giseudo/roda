@@ -10,9 +10,6 @@ function Sprite:init(image, width, height, frame)
 	self:setFrame(frame)
 end
 
-function Sprite:draw(dt, position)
-end
-
 function Sprite:setFrame(frame)
 	self.frame = frame
 

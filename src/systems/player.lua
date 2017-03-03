@@ -11,15 +11,31 @@ end
 
 function PlayerSystem:onAdd(e)
 	self.bus:register("input/key-down/left", function ()
-		self.bus:emit("physics/translate", e, Vector(-100, 0))
+		e.animator:set("run")
+		if (e.transform.scale.x > 0) then
+			e.transform.scale.x = -1 * e.transform.scale.x
+		end
+		self.bus:emit("physics/translate", e, Vector(-200, 0))
 	end)
 
 	self.bus:register("input/key-down/right", function ()
-		self.bus:emit("physics/translate", e, Vector(100, 0))
+		e.animator:set("run")
+		if (e.transform.scale.x < 0) then
+			e.transform.scale.x = -1 * e.transform.scale.x
+		end
+		self.bus:emit("physics/translate", e, Vector(200, 0))
+	end)
+
+	self.bus:register("input/key-released/left", function ()
+		e.animator:set("idle")
+	end)
+
+	self.bus:register("input/key-released/right", function ()
+		e.animator:set("idle")
 	end)
 
 	self.bus:register("input/key-down/jump", function ()
-		self.bus:emit("physics/jump", e, Vector(0, -600))
+		self.bus:emit("physics/translate", e, Vector(0, -1) * 450)
 	end)
 end
 

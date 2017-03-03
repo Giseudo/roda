@@ -7,6 +7,7 @@ local Animator = Class{
 }
 
 function Animator:init(name, start, finish, speed)
+	self.frame = start
 	self:add(name, start, finish, speed)
 	self:set(name)
 end
@@ -16,6 +17,11 @@ function Animator:add(name, start, finish, speed)
 end
 
 function Animator:set(name)
+	if (self.current ~= self.animations[name]) then
+		-- Cancel waiting until animation finishes
+		self.frame = self.animations[name][1]
+	end
+
 	self.current = self.animations[name]
 end
 

@@ -1,4 +1,5 @@
 local Class = require (LIB_PATH .. "hump.class")
+local Vector = require (LIB_PATH .. "hump.vector")
 local Rigidbody = require (RODA_PATH .. "components.rigidbody")
 local Sprite = require (RODA_PATH .. "components.sprite")
 local Transform = require (RODA_PATH .. "components.transform")
@@ -12,6 +13,7 @@ function B2:init(position)
 	self.rigidbody = Rigidbody(16, 32)
 	self.device = Device()
 	self.animator = Animator("idle", 0, 6, 0.1)
+	self.animator:add("run", 7, 14, 0.1)
 	--self.rigidbody.kinematic = true
 end
 
