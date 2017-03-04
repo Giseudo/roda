@@ -1,5 +1,3 @@
-require "env"
-
 local Class = require (LIB_PATH .. "hump.class")
 local Vector = require (LIB_PATH .. "hump.vector")
 local Camera = require (LIB_PATH .. "hump.camera")
