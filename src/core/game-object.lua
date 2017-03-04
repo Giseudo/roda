@@ -1,5 +1,6 @@
 local Class = require (LIB_PATH .. "hump.class")
 local GameObject = Class{
+	active = true,
 	parent = nil,
 	children = {},
 	layer = 1
