@@ -1,0 +1,1 @@
+-- View scene entities as tree view
