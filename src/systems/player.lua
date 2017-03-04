@@ -10,32 +10,38 @@ function PlayerSystem:new(bus)
 end
 
 function PlayerSystem:onAdd(e)
-	self.bus:register("input/key-down/left", function ()
-		e.animator:set("run")
-		if (e.transform.scale.x > 0) then
-			e.transform.scale.x = -1 * e.transform.scale.x
+	self:subscribe(e)
+end
+
+function PlayerSystem:subscribe(e)
+	self.bus:register("input/key-down", function (key)
+		if key == "left" then
+			e.animator:set("run")
+			if (e.transform.scale.x > 0) then
+				e.transform.scale.x = -1 * e.transform.scale.x
+			end
+			self.bus:emit("physics/translate", e, Vector(-200, 0))
 		end
-		self.bus:emit("physics/translate", e, Vector(-200, 0))
-	end)
 
-	self.bus:register("input/key-down/right", function ()
-		e.animator:set("run")
-		if (e.transform.scale.x < 0) then
-			e.transform.scale.x = -1 * e.transform.scale.x
+		if key == "right" then
+			e.animator:set("run")
+			if (e.transform.scale.x < 0) then
+				e.transform.scale.x = -1 * e.transform.scale.x
+			end
+			self.bus:emit("physics/translate", e, Vector(200, 0))
 		end
-		self.bus:emit("physics/translate", e, Vector(200, 0))
 	end)
 
-	self.bus:register("input/key-released/left", function ()
-		e.animator:set("idle")
+	self.bus:register("input/key-released", function (key)
+		if key == "left" or key == "right" then
+			e.animator:set("idle")
+		end
 	end)
 
-	self.bus:register("input/key-released/right", function ()
-		e.animator:set("idle")
-	end)
-
-	self.bus:register("input/key-down/jump", function ()
-		self.bus:emit("physics/translate", e, Vector(0, -1) * 450)
+	self.bus:register("input/key-down", function (key)
+		if key == "jump" then
+			self.bus:emit("physics/translate", e, Vector(0, -1) * 450)
+		end
 	end)
 end
 

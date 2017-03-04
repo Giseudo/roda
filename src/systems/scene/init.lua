@@ -1,10 +1,14 @@
 local Tiny = require (LIB_PATH .. "tiny.tiny")
 local Vector = require (LIB_PATH .. "hump.vector")
+local ParentingSystem = require (RODA_PATH .. "systems.scene.parenting")
 local SceneSystem = Tiny.system()
 
 function SceneSystem:new(bus)
 	self.bus = bus
-	self.filter = Tiny.requireAll("camera", "transform", "name")
+	self.filter = Tiny.requireAll("camera", "transform")
+
+	-- Init subsystems
+	self.bus:emit("system/add", "parenting", ParentingSystem:new(self.bus))
 
 	return self
 end

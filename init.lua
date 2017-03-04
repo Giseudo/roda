@@ -3,11 +3,13 @@ local Vector = require (LIB_PATH .. "hump.vector")
 local Camera = require (LIB_PATH .. "hump.camera")
 local Signal = require (LIB_PATH .. "hump.signal")
 local Tiny = require (LIB_PATH .. "tiny.tiny")
+local EditorSystem = require (RODA_PATH .. "systems.editor")
 
 local Engine = Class{
 	bus = Signal(),
 	world = Tiny.world(),
-	systems = {}
+	systems = {},
+	scene = {}
 }
 
 function Engine:init()
@@ -17,10 +19,14 @@ function Engine:init()
 		self.world:refresh()
 	end)
 
-	self.bus:register("entity/add", function(entity)
+	self.bus:register("scene/add", function(entity)
 		self.world:add(entity)
 		self.world:refresh()
 	end)
+
+	if GAME_EDITOR then
+		self.bus:emit("system/add", "editor", EditorSystem:new(self.bus))
+	end
 end
 
 function Engine:update(dt)
@@ -32,7 +38,10 @@ function Engine:draw()
 
 	love.graphics.clear(100, 100, 100, 255)
 	self.bus:emit("render/draw", dt)
-	self.bus:emit("editor/draw", dt)
+
+	if GAME_EDITOR then
+		self.bus:emit("editor/draw", dt)
+	end
 end
 
 return Engine

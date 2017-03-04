@@ -1,14 +1,13 @@
 local Tiny = require (LIB_PATH .. "tiny.tiny")
 local AnimationSystem = require (RODA_PATH .. "systems.render.animation")
-local SceneSystem = require (RODA_PATH .. "systems.render.scene")
 local RenderSystem = Tiny.system()
 
 function RenderSystem:new(bus)
 	self.bus = bus
 	self.filter = Tiny.requireAll("sprite", "transform")
 
+	-- Init subsystems
 	self.bus:emit("system/add", "animation", AnimationSystem:new(self.bus))
-	self.bus:emit("system/add", "scene", SceneSystem:new(self.bus))
 
 	self.bus:register("render/debug", function (value)
 		self.debug = value
@@ -21,6 +20,7 @@ function RenderSystem:onAdd(e)
 	self.bus:register("scene/draw", function (dt)
 		self:draw(e, dt)
 	end)
+
 	self.bus:register("scene/debug/draw", function (dt)
 		if self.debug then
 			self:drawDebug(e, dt)

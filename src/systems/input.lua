@@ -15,28 +15,17 @@ function InputSystem:onAdd(e)
 end
 
 function InputSystem:update(e, dt)
-	if love.keyboard.isDown(e.device.left) then
-		self.bus:emit("input/key-down/left")
-	end
-	if love.keyboard.isDown(e.device.right) then
-		self.bus:emit("input/key-down/right")
-	end
-	if love.keyboard.isDown(e.device.up) then
-		self.bus:emit("input/key-down/up")
-	end
-	if love.keyboard.isDown(e.device.down) then
-		self.bus:emit("input/key-down/down")
-	end
-	if love.keyboard.isDown(e.device.jump) then
-		self.bus:emit("input/key-down/jump")
+	for key, value in pairs(e.device) do
+		if love.keyboard.isDown(value) then
+			self.bus:emit("input/key-down", key)
+		end
 	end
 
-	function love.keyreleased(key)
-		if e.device.left == key then
-			self.bus:emit("input/key-released/left")
-		end
-		if e.device.right == key then
-			self.bus:emit("input/key-released/right")
+	function love.keyreleased(released)
+		for key, value in pairs(e.device) do
+			if released == value then
+				self.bus:emit("input/key-released", key)
+			end
 		end
 	end
 end
