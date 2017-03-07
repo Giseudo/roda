@@ -4,6 +4,7 @@ local Camera = require (LIB_PATH .. "hump.camera")
 local Signal = require (LIB_PATH .. "hump.signal")
 local Tiny = require (LIB_PATH .. "tiny.tiny")
 local EditorSystem = require (RODA_PATH .. "systems.editor")
+local ProcessSystem = require (RODA_PATH .. "systems.process")
 
 local Engine = Class{
 	bus = Signal(),
@@ -23,6 +24,8 @@ function Engine:init()
 		self.world:add(entity)
 		self.world:refresh()
 	end)
+
+	self.bus:emit("system/add", "process", ProcessSystem:new(self.bus))
 
 	if GAME_EDITOR then
 		self.bus:emit("system/add", "editor", EditorSystem:new(self.bus))
