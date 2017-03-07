@@ -23,6 +23,12 @@ function Engine:init()
 	self.bus:register("scene/add", function(entity)
 		self.world:add(entity)
 		self.world:refresh()
+
+		-- On add entity hook
+		-- FIXME: Polish this
+		if entity.onAdd then
+			entity:onAdd()
+		end
 	end)
 
 	self.bus:emit("system/add", "process", ProcessSystem:new(self.bus))

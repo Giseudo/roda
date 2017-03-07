@@ -19,8 +19,8 @@ function ProcessSystem:attach(process)
 	table.insert(self.processes, process)
 end
 
-function ProcessSystem:remove(process)
-	table.remove(self.processes, 1)
+function ProcessSystem:remove(index)
+	table.remove(self.processes, index)
 end
 
 function ProcessSystem:update(dt)
@@ -49,7 +49,7 @@ function ProcessSystem:update(dt)
 				process:onAbort()
 			end
 
-			self:remove(process)
+			self:remove(i)
 		end
 	end
 end
