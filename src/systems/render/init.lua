@@ -1,13 +1,13 @@
-local Tiny = require (LIB_PATH .. "tiny.tiny")
+local Tiny = require "tiny"
 local AnimationSystem = require (RODA_PATH .. "systems.render.animation")
-local RenderSystem = Tiny.system()
+local render_system = Tiny.system()
 
-function RenderSystem:new(bus)
+function render_system:new(bus)
 	self.bus = bus
 	self.filter = Tiny.requireAll("sprite", "transform")
 
 	-- Init subsystems
-	self.bus:emit("system/add", "animation", AnimationSystem:new(self.bus))
+	self.bus:emit("system/add", "animation", AnimationSystem(self.bus))
 
 	self.bus:register("render/debug", function (value)
 		self.debug = value
@@ -16,19 +16,19 @@ function RenderSystem:new(bus)
 	return self
 end
 
-function RenderSystem:onAdd(e)
+function render_system:onAdd(e)
 	self.bus:register("scene/draw", function (dt)
 		self:draw(e, dt)
 	end)
 
 	self.bus:register("scene/debug/draw", function (dt)
 		if self.debug then
-			self:drawDebug(e, dt)
+			self:draw_debug(e, dt)
 		end
 	end)
 end
 
-function RenderSystem:draw(e, dt)
+function render_system:draw(e, dt)
 	love.graphics.draw(
 		e.sprite.image,
 		e.sprite.quad,
@@ -40,7 +40,7 @@ function RenderSystem:draw(e, dt)
 	)
 end
 
-function RenderSystem:drawDebug(e, dt)
+function render_system:draw_debug(e, dt)
 	love.graphics.setColor(255, 0, 255, 150)
 	love.graphics.rectangle(
 		"line",
@@ -53,5 +53,4 @@ function RenderSystem:drawDebug(e, dt)
 	love.graphics.setColor(255, 255, 255, 255)
 end
 
-
-return RenderSystem
+return setmetatable(render_system, { __call = render_system.new })

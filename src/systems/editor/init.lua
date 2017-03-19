@@ -1,5 +1,5 @@
 require "imgui"
-local Tiny = require (LIB_PATH .. "tiny.tiny")
+local Tiny = require "tiny"
 local Bump = require (LIB_PATH .. "bump.bump")
 local EditorSystem = Tiny.system()
 

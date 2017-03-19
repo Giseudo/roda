@@ -1,15 +1,18 @@
-local game_object = {}
+local game_object = {
+	active = true,
+	parent = nil,
+	children = {},
+	components = {},
+	layer = 1
+}
 
-local function constructor(o, bus, name, layer, parent)
+function game_object:new(o, bus, name, layer, parent)
 	o = o or {}
-	o.active = true
-	o.bus = bus
-	o.name = name
-	o.parent = parent or nil
-	o.layer = layer or 1
-	o.children = {}
-	o.listening = {}
-	o.components = {}
+	o.bus = bus or nil
+	o.name = name or ""
+
+	self.__index = self
+	setmetatable(o, self)
 
 	return o
 end
@@ -40,7 +43,4 @@ function game_object:unbind(event, callback)
 	self.bus:unregister(event, callback)
 end
 
-return setmetatable(
-	game_object,
-	{ __call = constructor }
-)
+return setmetatable(game_object, { __call = game_object.new })

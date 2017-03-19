@@ -1,4 +1,4 @@
-local Tiny = require (LIB_PATH .. "tiny.tiny")
+local Tiny = require "tiny"
 local Vector = require (LIB_PATH .. "hump.vector")
 local PlayerSystem = Tiny.system()
 

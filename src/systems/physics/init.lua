@@ -1,5 +1,5 @@
-local Tiny = require (LIB_PATH .. "tiny.tiny")
-local Bump = require (LIB_PATH .. "bump.bump")
+local Tiny = require "tiny"
+local Bump = require "bump"
 local Vector = require (LIB_PATH .. "hump.vector")
 local JumpSystem = require (RODA_PATH .. "systems.physics.jump")
 local GravitySystem = require (RODA_PATH .. "systems.physics.gravity")
@@ -7,6 +7,18 @@ local PhysicsSystem = Tiny.system()
 
 function PhysicsSystem:new(bus)
 	self.bus = bus
+	-- TODO: Test if this works
+	self.filter = function (e)
+		if e.components then
+			for key, component in e.components do
+				if key == "transform" or "rigidbody" then
+					return true
+				end
+			end
+		end
+
+		return false
+	end
 	self.filter = Tiny.requireAll("transform", "rigidbody")
 	self.bump = Bump.newWorld(32)
 

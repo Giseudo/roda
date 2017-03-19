@@ -1,20 +1,20 @@
-local Tiny = require (LIB_PATH .. "tiny.tiny")
-local AnimationSystem = Tiny.system()
+local Tiny = require "tiny"
+local animation_system = Tiny.system()
 
-function AnimationSystem:new(bus)
+function animation_system:new(bus)
 	self.bus = bus
-	self.filter = Tiny.requireAll("sprite", "animator")
+	self.filter = Tiny.requireAll("animator", "sprite")
 
 	return self
 end
 
-function AnimationSystem:onAdd(e)
+function animation_system:onAdd(e)
 	self.bus:register("update", function (dt)
 		self:update(e, dt)
 	end)
 end
 
-function AnimationSystem:update(e, dt)
+function animation_system:update(e, dt)
 	if e.animator.current == nil then
 		return
 	end
@@ -28,4 +28,4 @@ function AnimationSystem:update(e, dt)
 end
 
 
-return AnimationSystem
+return setmetatable(animation_system, { __call = animation_system.new })

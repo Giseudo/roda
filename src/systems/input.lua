@@ -1,4 +1,4 @@
-local Tiny = require (LIB_PATH .. "tiny.tiny")
+local Tiny = require "tiny"
 local InputSystem = Tiny.system()
 
 function InputSystem:new(bus)
