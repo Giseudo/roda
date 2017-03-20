@@ -1,3 +1,4 @@
-RODA_SRC = LIB_PATH .. "roda.src"
-RODA_LIB =  LIB_PATH .. "roda.lib"
-RODA_ASSETS = LIB_PATH .. "roda.assets"
+RODA_PATH = GAME_LIB .. 'roda.'
+RODA_SRC = RODA_PATH .. 'src.'
+RODA_LIB =  RODA_PATH .. "lib."
+RODA_ASSETS = RODA_PATH .. "assets."

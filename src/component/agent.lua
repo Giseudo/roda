@@ -1,0 +1,3 @@
+-- Drive entity through the world
+-- Any AI or Human entity should have this component
+-- Whether entity walks, swims or flies

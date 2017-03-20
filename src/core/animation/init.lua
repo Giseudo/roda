@@ -1,13 +1,11 @@
-local animation = {}
+local Class = require 'middleclass'
 
-function animation:new(begin, finish, framerate)
+local animation = Class('Animation')
+
+function animation:initialize(begin, finish, framerate)
 	self.begin = begin
 	self.finish = finish
-	self.framerate = framerate
-
-	return self
+	self.framerate = framerate or 0.1
 end
 
-return setmetatable(animation,
-	{ __call = animation.new }
-)
+return animation

@@ -1,0 +1,4 @@
+local world = {
+	physics = {},
+	entities = {}
+}

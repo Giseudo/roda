@@ -1,20 +1,14 @@
-local game_object = {
-	active = true,
-	parent = nil,
-	children = {},
-	components = {},
-	layer = 1
-}
+local Class = require 'middleclass'
+local game_object = Class('GameObject')
 
-function game_object:new(o, bus, name, layer, parent)
-	o = o or {}
-	o.bus = bus or nil
-	o.name = name or ""
-
-	self.__index = self
-	setmetatable(o, self)
-
-	return o
+function game_object:initialize(bus, name, layer, parent)
+	self.bus = bus or nil
+	self.name = name or ''
+	self.active = true
+	self.parent = parent or nil
+	self.children = {}
+	self.components = {}
+	self.layer = layer or 1
 end
 
 function game_object:add_component(name, component)
@@ -43,4 +37,4 @@ function game_object:unbind(event, callback)
 	self.bus:unregister(event, callback)
 end
 
-return setmetatable(game_object, { __call = game_object.new })
+return game_object
