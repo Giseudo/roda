@@ -10,8 +10,8 @@ function render_system:initialize(bus)
 
 	self.filter = Tiny.requireAll('sprite', 'transform')
 
-	-- Init subsystems
-	self.bus:emit('system/add', 'animation', AnimationSystem(self.bus))
+	-- Create subsystems
+	self:add_subsystem(AnimationSystem(self.bus))
 end
 
 function render_system:bind()
@@ -21,7 +21,7 @@ function render_system:bind()
 end
 
 function render_system:on_add(e)
-	self.bus:register('scene/draw', function (dt)
+	self.bus:register('scene/camera/draw', function (dt)
 		self:draw(e, dt)
 	end)
 

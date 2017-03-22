@@ -1,6 +1,6 @@
 local Class = require 'middleclass'
 local Tiny = require 'tiny'
-local Bump = require 'bump'
+local Roda = require (GAME_LIB .. 'roda')
 local Vector = require (RODA_LIB .. 'hump.vector')
 local System = require (RODA_SRC .. 'system')
 local JumpSystem = require (RODA_SRC .. 'system.physics.jump')
@@ -12,11 +12,11 @@ function physics_system:initialize(bus)
 	System.initialize(self, bus)
 
 	self.filter = Tiny.requireAll('transform', 'rigidbody')
-	self.bump = Bump.newWorld(32)
+	self.space = Roda.scene.space
 
 	-- Initialize Subsystems
-	self.bus:emit('system/add', 'jump', JumpSystem:new(self.bus))
-	self.bus:emit('system/add', 'gravity', GravitySystem:new(self.bus))
+	self:add_subsystem(JumpSystem(self.bus))
+	self:add_subsystem(GravitySystem(self.bus))
 end
 
 function physics_system:bind()
@@ -30,8 +30,7 @@ function physics_system:bind()
 end
 
 function physics_system:on_add(e)
-	self.bump:add(
-		e,
+	self.bus:emit('scene/space/add', e,
 		e.transform.position.x - e.rigidbody.width / 2,
 		e.transform.position.y - e.rigidbody.height / 2,
 		e.rigidbody.width,
@@ -46,7 +45,7 @@ function physics_system:on_add(e)
 end
 
 function physics_system:translate(e, velocity)
-	local actualX, actualY = self.bump:move(
+	local actualX, actualY = self.space:move(
 		e,
 		(e.transform.position.x - e.rigidbody.width / 2) + velocity.x * love.timer.getDelta(),
 		(e.transform.position.y - e.rigidbody.height / 2) + velocity.y * love.timer.getDelta()
@@ -64,7 +63,7 @@ function physics_system:draw_debug(e, dt)
 	love.graphics.setColor(0, 255, 0, 150)
 	love.graphics.rectangle(
 		'line',
-		self.bump:getRect(e)
+		self.space:getRect(e)
 	)
 	love.graphics.setColor(255, 255, 255, 255)
 end

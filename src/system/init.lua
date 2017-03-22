@@ -10,6 +10,11 @@ function system:initialize(bus)
 	self:bind()
 end
 
+function system:add_subsystem(subsystem)
+	self.bus:emit('world/add', subsystem)
+end
+
+-- Wrappers
 function system:onAdd(e) self:on_add(e) end
 
 -- Virtual Methods

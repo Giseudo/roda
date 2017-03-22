@@ -17,7 +17,7 @@ function parenting_system:bind()
 	end)
 end
 
-function parenting_system:onAdd(e)
+function parenting_system:on_add(e)
 	self.bus:register('update', function(dt)
 		self:update(e, dt)
 	end)

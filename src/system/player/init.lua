@@ -11,8 +11,16 @@ function player_system:initialize(bus)
 	self.filter = Tiny.requireAll('controller', 'transform', 'rigidbody')
 end
 
+function player_system:bind()
+
+end
+
 function player_system:on_add(e)
 	self:subscribe(e)
+
+	self.bus:register('update', function (dt)
+		self.bus:emit('player/moved', e, dt)
+	end)
 end
 
 function player_system:subscribe(e)
@@ -28,7 +36,7 @@ function player_system:subscribe(e)
 			if (e.transform.scale.x > 0) then
 				e.transform.scale.x = -1 * e.transform.scale.x
 			end
-			self.bus:emit('physics/translate', e, Vector(-200, 0))
+			self.bus:emit('physics/translate', e, Vector(-120, 0))
 		end
 
 		if key == 'right' then
@@ -36,7 +44,7 @@ function player_system:subscribe(e)
 			if (e.transform.scale.x < 0) then
 				e.transform.scale.x = -1 * e.transform.scale.x
 			end
-			self.bus:emit('physics/translate', e, Vector(200, 0))
+			self.bus:emit('physics/translate', e, Vector(120, 0))
 		end
 
 		if key == 'space' then
