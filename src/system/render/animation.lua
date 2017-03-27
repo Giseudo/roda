@@ -4,14 +4,14 @@ local System = require (RODA_SRC .. 'system')
 
 local animation_system = Class('AnimationSystem', System)
 
-function animation_system:initialize(bus)
-	System.initialize(self, bus)
+function animation_system:initialize()
+	System.initialize(self)
 
 	self.filter = Tiny.requireAll('animator', 'sprite')
 end
 
 function animation_system:on_add(e)
-	self.bus:register('update', function (dt)
+	Roda.bus:register('update', function (dt)
 		self:update(e, dt)
 	end)
 end

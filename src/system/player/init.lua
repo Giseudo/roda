@@ -5,8 +5,8 @@ local System = require (RODA_SRC .. 'system')
 
 local player_system = Class('PlayerSystem', System)
 
-function player_system:initialize(bus)
-	System.initialize(self, bus)
+function player_system:initialize()
+	System.initialize(self)
 
 	self.filter = Tiny.requireAll('controller', 'transform', 'rigidbody')
 end
@@ -18,25 +18,25 @@ end
 function player_system:on_add(e)
 	self:subscribe(e)
 
-	self.bus:register('update', function (dt)
-		self.bus:emit('player/moved', e, dt)
+	Roda.bus:register('update', function (dt)
+		Roda.bus:emit('player/moved', e, dt)
 	end)
 end
 
 function player_system:subscribe(e)
-	self.bus:register('input/released', function (key)
+	Roda.bus:register('input/released', function (key)
 		if key == 'left' or key == 'right' then
 			e.animator:set('idle')
 		end
 	end)
 
-	self.bus:register('input/pressing', function (key)
+	Roda.bus:register('input/pressing', function (key)
 		if key == 'left' then
 			e.animator:set('run')
 			if (e.transform.scale.x > 0) then
 				e.transform.scale.x = -1 * e.transform.scale.x
 			end
-			self.bus:emit('physics/translate', e, Vector(-120, 0))
+			Roda.bus:emit('physics/translate', e, Vector(-120, 0))
 		end
 
 		if key == 'right' then
@@ -44,11 +44,11 @@ function player_system:subscribe(e)
 			if (e.transform.scale.x < 0) then
 				e.transform.scale.x = -1 * e.transform.scale.x
 			end
-			self.bus:emit('physics/translate', e, Vector(120, 0))
+			Roda.bus:emit('physics/translate', e, Vector(120, 0))
 		end
 
 		if key == 'space' then
-			self.bus:emit('physics/translate', e, Vector(0, -1) * 450)
+			Roda.bus:emit('physics/translate', e, Vector(0, -1) * 450)
 		end
 	end)
 end

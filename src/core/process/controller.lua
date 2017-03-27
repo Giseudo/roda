@@ -1,13 +1,13 @@
 local Class = require 'middleclass'
-local process_manager = Class('ProcessManager')
+local process_controller = Class('ProcessManager')
 
-function process_manager:initialize(bus)
+function process_controller:initialize(bus)
 	self.processes = {}
 	self.bus = bus
 	self:bind()
 end
 
-function process_manager:bind()
+function process_controller:bind()
 	self.bus:register('process/attach', function (process)
 		self:attach(process)
 	end)
@@ -17,18 +17,18 @@ function process_manager:bind()
 	end)
 end
 
-function process_manager:unbind()
+function process_controller:unbind()
 end
 
-function process_manager:attach(process)
+function process_controller:attach(process)
 	table.insert(self.processes, process)
 end
 
-function process_manager:remove(index)
+function process_controller:remove(index)
 	table.remove(self.processes, index)
 end
 
-function process_manager:update(dt)
+function process_controller:update(dt)
 	for i, process in ipairs(self.processes) do
 		if process.state == 'UNINITIALIZED' then
 			process:on_init()
@@ -57,4 +57,4 @@ function process_manager:update(dt)
 	end
 end
 
-return process_manager
+return process_controller

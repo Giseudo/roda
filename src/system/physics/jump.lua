@@ -5,16 +5,16 @@ local System = require (RODA_SRC .. 'system')
 
 local jump_system = Class('JumpSystem', System)
 
-function jump_system:initialize(bus)
-	System.initialize(self, bus)
+function jump_system:initialize()
+	System.initialize(self)
 
 	self.filter = Tiny.requireAll('transform', 'rigidbody', 'agent')
 end
 
 function jump_system:bind()
-	self.bus:register('physics/jump', function (e, velocity)
+	Roda.bus:register('physics/jump', function (e, velocity)
 		if e.rigidbody:is_grounded() then
-			self.bus:emit('physics/translate', e, velocity)
+			Roda.bus:emit('physics/translate', e, velocity)
 		end
 	end)
 end

@@ -11,7 +11,7 @@ function system:initialize(bus)
 end
 
 function system:add_subsystem(subsystem)
-	self.bus:emit('world/add', subsystem)
+	Roda.bus:emit('world/add', subsystem)
 end
 
 -- Wrappers

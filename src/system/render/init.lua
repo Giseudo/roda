@@ -11,21 +11,21 @@ function render_system:initialize(bus)
 	self.filter = Tiny.requireAll('sprite', 'transform')
 
 	-- Create subsystems
-	self:add_subsystem(AnimationSystem(self.bus))
+	self:add_subsystem(AnimationSystem())
 end
 
 function render_system:bind()
-	self.bus:register('render/debug', function (value)
+	Roda.bus:register('render/debug', function (value)
 		self.debug = value
 	end)
 end
 
 function render_system:on_add(e)
-	self.bus:register('scene/camera/draw', function (dt)
+	Roda.bus:register('scene/camera/draw', function (dt)
 		self:draw(e, dt)
 	end)
 
-	self.bus:register('scene/debug/draw', function (dt)
+	Roda.bus:register('scene/debug/draw', function (dt)
 		if self.debug then
 			self:draw_debug(e, dt)
 		end

@@ -1,9 +1,9 @@
 local Class = require 'middleclass'
 local Animation = require (RODA_SRC .. 'core.animation')
 
-local animator = Class('animator')
+local animator_component = Class('AnimatorComponent')
 
-function animator:initialize(name, animation)
+function animator_component:initialize(name, animation)
 	self.timer = 0
 	self.current = nil
 	self.animations = {}
@@ -11,11 +11,11 @@ function animator:initialize(name, animation)
 	self:set(name)
 end
 
-function animator:add(name, animation)
+function animator_component:add(name, animation)
 	self.animations[name] = animation
 end
 
-function animator:set(name)
+function animator_component:set(name)
 	-- Skip current animation
 	if (self.current ~= self.animations[name]) then
 		self.frame = self.animations[name].begin
@@ -24,7 +24,7 @@ function animator:set(name)
 	self.current = self.animations[name]
 end
 
-function animator:next()
+function animator_component:next()
 	if self.frame >= self.current.finish then
 		self.frame = self.current.begin
 	else
@@ -34,4 +34,4 @@ function animator:next()
 	return self.frame
 end
 
-return animator
+return animator_component
