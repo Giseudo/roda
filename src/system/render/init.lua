@@ -15,17 +15,17 @@ function render_system:initialize(bus)
 end
 
 function render_system:bind()
-	Roda.bus:register('render/debug', function (value)
+	roda.bus:register('render/debug', function (value)
 		self.debug = value
 	end)
 end
 
 function render_system:on_add(e)
-	Roda.bus:register('scene/camera/draw', function (dt)
+	roda.bus:register('scene/camera/draw', function (dt)
 		self:draw(e, dt)
 	end)
 
-	Roda.bus:register('scene/debug/draw', function (dt)
+	roda.bus:register('scene/debug/draw', function (dt)
 		if self.debug then
 			self:draw_debug(e, dt)
 		end

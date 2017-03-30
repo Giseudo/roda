@@ -11,7 +11,7 @@ function animation_system:initialize()
 end
 
 function animation_system:on_add(e)
-	Roda.bus:register('update', function (dt)
+	roda.bus:register('update', function (dt)
 		self:update(e, dt)
 	end)
 end

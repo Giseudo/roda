@@ -1,34 +1,42 @@
+-- TODO: Refactor this and test
 local Class = require 'middleclass'
-local process_controller = Class('ProcessManager')
+local System = require (RODA_SRC .. 'system')
+local Tiny = require 'tiny'
 
-function process_controller:initialize(bus)
+local processing_system = Class('ProcessManager', System)
+
+function processing_system:initialize()
+	System.initialize(self)
 	self.processes = {}
-	self.bus = bus
-	self:bind()
+
+	self.filter = Tiny.requireAll('process'`)
 end
 
-function process_controller:bind()
-	self.bus:register('process/attach', function (process)
+function processing_system:bind()
+	roda.bus:register('process/attach', function (process)
 		self:attach(process)
 	end)
 
-	self.bus:register('update', function (dt)
+	roda.bus:register('update', function (dt)
 		self:update(dt)
 	end)
 end
 
-function process_controller:unbind()
+function processing_system:unbind()
 end
 
-function process_controller:attach(process)
+function processing_system:on_add(e)
+end
+
+function processing_system:attach(process)
 	table.insert(self.processes, process)
 end
 
-function process_controller:remove(index)
+function processing_system:remove(index)
 	table.remove(self.processes, index)
 end
 
-function process_controller:update(dt)
+function processing_system:update(dt)
 	for i, process in ipairs(self.processes) do
 		if process.state == 'UNINITIALIZED' then
 			process:on_init()
@@ -57,4 +65,4 @@ function process_controller:update(dt)
 	end
 end
 
-return process_controller
+return processing_system

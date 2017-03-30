@@ -13,22 +13,22 @@ function gravity_system:initialize()
 end
 
 function gravity_system:bind()
-	Roda.bus:register('physics/gravity/set', function (acceleration)
+	roda.bus:register('physics/gravity/set', function (acceleration)
 		self:set_acceleration(acceleration)
 	end)
 end
 
 function gravity_system:on_add(e)
-	Roda.bus:register('update', function (dt)
+	roda.bus:register('update', function (dt)
 		if e.rigidbody.kinematic == false then
-			Roda.bus:emit('physics/translate', e, self.acceleration)
+			roda.bus:emit('physics/translate', e, self.acceleration)
 		end
 	end)
 end
 
 function gravity_system:set_acceleration(acceleration)
 	self.acceleration = acceleration
-	Roda.bus:emit('physics/gravity/changed', acceleration)
+	roda.bus:emit('physics/gravity/changed', acceleration)
 end
 
 return gravity_system

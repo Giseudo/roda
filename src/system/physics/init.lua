@@ -18,24 +18,24 @@ function physics_system:initialize()
 end
 
 function physics_system:bind()
-	Roda.bus:register('physics/debug', function (value)
+	roda.bus:register('physics/debug', function (value)
 		self.debug = value
 	end)
 
-	Roda.bus:register('physics/translate', function (e, velocity)
+	roda.bus:register('physics/translate', function (e, velocity)
 		self:translate(e, velocity)
 	end)
 end
 
 function physics_system:on_add(e)
-	Roda.bus:emit('scene/space/add', e,
+	roda.bus:emit('scene/space/add', e,
 		e.transform.position.x - e.rigidbody.width / 2,
 		e.transform.position.y - e.rigidbody.height / 2,
 		e.rigidbody.width,
 		e.rigidbody.height
 	)
 
-	Roda.bus:register('scene/debug/draw', function (dt)
+	roda.bus:register('scene/debug/draw', function (dt)
 		if (self.debug) then
 			self:draw_debug(e, dt)
 		end
@@ -43,7 +43,7 @@ function physics_system:on_add(e)
 end
 
 function physics_system:translate(e, velocity)
-	local actualX, actualY = Roda.space:move(
+	local actualX, actualY = roda.space:move(
 		e,
 		(e.transform.position.x - e.rigidbody.width / 2) + velocity.x * love.timer.getDelta(),
 		(e.transform.position.y - e.rigidbody.height / 2) + velocity.y * love.timer.getDelta()
@@ -61,7 +61,7 @@ function physics_system:draw_debug(e, dt)
 	love.graphics.setColor(0, 255, 0, 150)
 	love.graphics.rectangle(
 		'line',
-		Roda.space:getRect(e)
+		roda.space:getRect(e)
 	)
 	love.graphics.setColor(255, 255, 255, 255)
 end

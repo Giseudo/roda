@@ -1,21 +1,19 @@
 require (GAME_LIB .. 'roda.env')
-
-local Class = require 'middleclass'
 local Tiny = require 'tiny'
 local Bump = require 'bump'
 local Signal = require (RODA_LIB .. 'hump.signal')
 local Editor = require (RODA_SRC .. 'core.editor')
-local Space = require (RODA_SRC .. 'core.scene.space')
-local ProcessController = require (RODA_SRC .. 'core.process.controller')
+local ProcessSystem = require (RODA_SRC .. 'core.process.system')
 
-local roda = Class('Roda')
+roda = {}
 
 function roda:initialize()
 	self.bus = Signal()
 	self.space = Bump.newWorld(32)
 	self.world = Tiny.world()
-	self.process_controller = ProcessController(self.bus)
+	self.process_system = ProcessSystem()
 	self.pawn = nil
+	love.graphics.setDefaultFilter("nearest", "nearest", 0)
 
 	if GAME_EDITOR then
 		self.editor = Editor(self.bus)
@@ -24,7 +22,6 @@ function roda:initialize()
 	self.bus:register('world/add', function(e)
 		self.world:add(e)
 		self.world:refresh()
-		print('wut')
 	end)
 
 	self.bus:register('world/pawn', function(e)
@@ -61,5 +58,3 @@ function roda:draw()
 		self.bus:emit('editor/draw', dt)
 	end
 end
-
-return roda

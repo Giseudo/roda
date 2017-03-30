@@ -12,9 +12,9 @@ function jump_system:initialize()
 end
 
 function jump_system:bind()
-	Roda.bus:register('physics/jump', function (e, velocity)
+	roda.bus:register('physics/jump', function (e, velocity)
 		if e.rigidbody:is_grounded() then
-			Roda.bus:emit('physics/translate', e, velocity)
+			roda.bus:emit('physics/translate', e, velocity)
 		end
 	end)
 end
