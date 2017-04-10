@@ -6,19 +6,36 @@ function camera:new()
 	self.width = 320
 	self.height = 240
 	self.rotation = 0
-	self.zoom = 0
+	self.zoom = 1
 
 	return self
 end
 
 function camera:set()
+	x = math.floor(love.graphics.getWidth() / 2) / roda.multiplier
+	y = math.floor(love.graphics.getHeight() / 2) / roda.multiplier
+
+	-- Set World Coodinate
 	love.graphics.push()
 	love.graphics.rotate(-self.rotation)
-	love.graphics.scale(1 / self.zoom, 1 / self.zoom)
-	love.graphics.translate(-self.x, -self.y)
+	love.graphics.scale(1 / self.zoom, 1 / -self.zoom)
+	love.graphics.translate(x * self.zoom, -y * self.zoom)
+
+	-- Stencil Mask
+	love.graphics.stencil(function()
+		love.graphics.rectangle(
+			"fill",
+			(- self.width / 2) * self.zoom,
+			(- self.height / 2) * self.zoom,
+			self.width * self.zoom,
+			self.height * self.zoom
+		)
+	end, "replace", 1)
+	love.graphics.setStencilTest("greater", 0)
 end
 
 function camera:unset()
+	love.graphics.setStencilTest()
 	love.graphics.pop()
 end
 
