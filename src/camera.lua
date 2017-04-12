@@ -1,19 +1,32 @@
 local camera = {}
+local parent = {}
+function parent:new()
+	return setmetatable({}, { __index = self })
+end
+function parent:test()
+	print("OMG ITS WORKING")
+end
 
-function camera:new()
-	self.x = 0
-	self.y = 0
-	self.width = 320
-	self.height = 240
-	self.rotation = 0
-	self.zoom = 1
-
-	return self
+-- FIGURE OUT WHY INHERITANCE NEVER WORKS
+function camera:new(x, y, width, height)
+	self = parent:new()
+	self:test()
+	return setmetatable(
+		{
+			x = x or 0,
+			y = y or 0,
+			width = width or 320,
+			height = height or 200,
+			rotation = 0,
+			zoom = 2
+		},
+		{ __index = camera }
+	)
 end
 
 function camera:set()
-	x = math.floor(love.graphics.getWidth() / 2) / roda.multiplier
-	y = math.floor(love.graphics.getHeight() / 2) / roda.multiplier
+	x = self.x + math.floor(love.graphics.getWidth() / 2) / roda.scale
+	y = self.y + math.floor(love.graphics.getHeight() / 2) / roda.scale
 
 	-- Set World Coodinate
 	love.graphics.push()
@@ -37,6 +50,7 @@ end
 function camera:unset()
 	love.graphics.setStencilTest()
 	love.graphics.pop()
+	--print(self:test())
 end
 
 function camera:move(dx, dy)

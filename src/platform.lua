@@ -1,20 +1,20 @@
-local player = {}
+local platform = {}
 
-function player:new(x, y, width, height)
+function platform:new(x, y, width, height)
 	return setmetatable({
 		x = x or 0,
 		y = y or 0,
-		width = width or 16,
+		width = width or 200,
 		height = height or 32
 	},
 	{ __index = self })
 end
 
-function player:update()
+function platform:update()
 end
 
-function player:draw()
-	love.graphics.setColor(255, 255, 0, 255)
+function platform:draw()
+	love.graphics.setColor(0, 255, 0, 255)
 	love.graphics.rectangle(
 		"fill",
 		self.x - self.width / 2,
@@ -24,4 +24,6 @@ function player:draw()
 	)
 end
 
-return setmetatable(player, { __call = player.new })
+return setmetatable(platform, { __call = platform.new })
+
+
