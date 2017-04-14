@@ -2,18 +2,22 @@ require (GAME_LIB .. 'roda.env')
 local Camera = require (RODA_SRC .. 'camera')
 local Player = require (RODA_SRC .. 'player')
 local Platform = require (RODA_SRC .. 'platform')
+local Tilemap = require (RODA_SRC .. 'tilemap')
 
 roda = {
 	scale = 4,
+	unit = 16,
 	shader = nil,
 	shaders = {},
 	camera = Camera(),
-	player = Player(),
-	platform = Platform(0, -32)
+	player = Player(0, 0),
+	platform = Platform(0, -32),
+	tilemap = Tilemap(0, 0, 128, 128)
 }
 
 function roda:run()
 	love.graphics.setDefaultFilter('nearest', 'nearest', 1)
+	love.graphics.setPointSize(4)
 	love.window.setMode(
 		self.camera.width * self.scale,
 		self.camera.height * self.scale,
@@ -31,8 +35,6 @@ function roda:run()
 end
 
 function roda:update(dt)
-	self.player:update(dt)
-	self.platform:update(dt)
 end
 
 function roda:events()
@@ -44,8 +46,10 @@ function roda:draw()
 	love.graphics.clear(100, 100, 120, 255)
 	self.camera:set()
 
+	self.tilemap:draw()
 	self.player:draw()
-	self.platform:draw()
+	love.graphics.setColor(255, 0, 0, 255)
+	love.graphics.points(0, 0)
 
 	self.camera:unset()
 end
