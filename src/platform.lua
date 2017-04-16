@@ -4,8 +4,8 @@ function platform:new(x, y, width, height)
 	return setmetatable({
 		x = x or 0,
 		y = y or 0,
-		width = width or 200,
-		height = height or 32
+		width = width or 100,
+		height = height or 10
 	},
 	{ __index = self })
 end

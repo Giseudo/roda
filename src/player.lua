@@ -2,23 +2,57 @@ local player = {}
 
 function player:new(x, y, width, height)
 	return setmetatable({
-		x = x or 0,
-		y = y or 0,
+		position = Vector(x or 0, y or 0),
 		width = width or 16,
-		height = height or 32
+		height = height or 32,
+		acceleration = Vector(0, 0),
+		velocity = Vector(0, 0),
+		friction = -0.2
 	},
 	{ __index = self })
 end
 
-function player:update()
+function player:jump()
+	self.velocity.y = 16
+end
+
+function player:update(dt)
+	-- Reset acceleration every frame
+	self.acceleration = Vector(0, 0)
+
+	-- TODO Move this out here later
+	function love.keypressed(key)
+		if key == "space" then
+			self:jump()
+		end
+	end
+	if love.keyboard.isDown("left") then
+		self.acceleration.x = -0.75
+	end
+	if love.keyboard.isDown("right") then
+		self.acceleration.x = 0.75
+	end
+	if love.keyboard.isDown("down") then
+		self.acceleration.y = -0.75
+	end
+	if love.keyboard.isDown("up") then
+		self.acceleration.y = 0.75
+	end
+
+	-- Apply friction
+	self.acceleration.x = self.acceleration.x + self.velocity.x * self.friction
+	self.acceleration.y = self.acceleration.y + self.velocity.y * self.friction
+	-- Equations of motion
+	self.velocity = self.velocity + self.acceleration
+	self.position = self.position + self.velocity + 0.5 * self.acceleration
 end
 
 function player:draw()
 	love.graphics.setColor(255, 255, 0, 255)
 	love.graphics.rectangle(
 		"fill",
-		self.x * roda.unit - self.width / 2,
-		self.y * self.height / roda.unit,
+		self.position.x - self.width / 2,
+		self.position.y,
 		self.width,
 		self.height
 	)

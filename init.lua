@@ -1,17 +1,18 @@
 require (GAME_LIB .. 'roda.env')
+require (RODA_SRC .. 'core')
 local Camera = require (RODA_SRC .. 'camera')
 local Player = require (RODA_SRC .. 'player')
 local Platform = require (RODA_SRC .. 'platform')
 local Tilemap = require (RODA_SRC .. 'tilemap')
 
 roda = {
-	scale = 4,
+	scale = 3,
 	unit = 16,
 	shader = nil,
 	shaders = {},
-	camera = Camera(),
+	camera = Camera(0, 100),
 	player = Player(0, 0),
-	platform = Platform(0, -32),
+	platform = Platform(0, -16, 1000, 32),
 	tilemap = Tilemap(0, 0, 128, 128)
 }
 
@@ -20,11 +21,7 @@ function roda:run()
 	love.graphics.setPointSize(4)
 	love.window.setMode(
 		self.camera.width * self.scale,
-		self.camera.height * self.scale,
-		{
-			fullscreen = true,
-			fullscreentype = 'exclusive'
-		}
+		self.camera.height * self.scale
 	)
 	self:add_shader(
 		'default',
@@ -35,6 +32,8 @@ function roda:run()
 end
 
 function roda:update(dt)
+	self.player:update(dt)
+	self.camera:follow(self.player)
 end
 
 function roda:events()
@@ -48,8 +47,7 @@ function roda:draw()
 
 	self.tilemap:draw()
 	self.player:draw()
-	love.graphics.setColor(255, 0, 0, 255)
-	love.graphics.points(0, 0)
+	self.platform:draw()
 
 	self.camera:unset()
 end

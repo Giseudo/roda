@@ -1,16 +1,6 @@
 local camera = {}
-local parent = {}
-function parent:new()
-	return setmetatable({}, { __index = self })
-end
-function parent:test()
-	print("OMG ITS WORKING")
-end
 
--- FIGURE OUT WHY INHERITANCE NEVER WORKS
 function camera:new(x, y, width, height)
-	self = parent:new()
-	self:test()
 	return setmetatable(
 		{
 			x = x or 0,
@@ -24,22 +14,37 @@ function camera:new(x, y, width, height)
 	)
 end
 
+function camera:follow(target)
+	self:move(
+		(target.position.x - self.x) * 2 * love.timer.getDelta(),
+		(target.position.y - self.y) * 2 * love.timer.getDelta()
+	)
+end
+
+function camera:move(x, y)
+	self.x = self.x + x or 0
+	self.y = self.y + y or 0
+end
+
 function camera:set()
-	x = self.x + math.floor(love.graphics.getWidth() / 2) / roda.scale
-	y = self.y + math.floor(love.graphics.getHeight() / 2) / roda.scale
+	local x = math.floor(love.graphics.getWidth() / 2) / roda.scale
+	local y = math.floor(love.graphics.getHeight() / 2) / roda.scale
 
 	-- Set World Coodinate
 	love.graphics.push()
-	love.graphics.rotate(-self.rotation)
-	love.graphics.scale(1 / self.zoom, 1 / -self.zoom)
-	love.graphics.translate(x * self.zoom, -y * self.zoom)
+	love.graphics.rotate(- self.rotation)
+	love.graphics.scale(1 / self.zoom, 1 / - self.zoom)
+	love.graphics.translate(
+		- self.x + x * self.zoom,
+		- self.y - y * self.zoom
+	)
 
 	-- Stencil Mask
 	love.graphics.stencil(function()
 		love.graphics.rectangle(
 			"fill",
-			(- self.width / 2) * self.zoom,
-			(- self.height / 2) * self.zoom,
+			self.x - self.width * self.zoom / 2,
+			self.y - self.height * self.zoom / 2,
 			self.width * self.zoom,
 			self.height * self.zoom
 		)
@@ -47,10 +52,14 @@ function camera:set()
 	love.graphics.setStencilTest("greater", 0)
 end
 
+function camera:move(x, y)
+	self.x = x
+	self.y = y
+end
+
 function camera:unset()
 	love.graphics.setStencilTest()
 	love.graphics.pop()
-	--print(self:test())
 end
 
 function camera:move(dx, dy)
