@@ -2,25 +2,24 @@ local platform = {}
 
 function platform:new(x, y, width, height)
 	return setmetatable({
-		x = x or 0,
-		y = y or 0,
-		width = width or 100,
-		height = height or 10
+		position = Vector(x or 0, y or 0),
+		rect = Rect(x or 0, y or 0, width or 100, height or 10)
 	},
 	{ __index = self })
 end
 
 function platform:update()
+	self.rect.position = position
 end
 
 function platform:draw()
 	love.graphics.setColor(0, 255, 0, 255)
 	love.graphics.rectangle(
 		"fill",
-		self.x - self.width / 2,
-		self.y - self.height / 2,
-		self.width,
-		self.height
+		self.rect:get_left(),
+		self.rect:get_bottom(),
+		self.rect.width,
+		self.rect.height
 	)
 end
 

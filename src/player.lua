@@ -3,17 +3,16 @@ local player = {}
 function player:new(x, y, width, height)
 	return setmetatable({
 		position = Vector(x or 0, y or 0),
-		width = width or 16,
-		height = height or 32,
 		acceleration = Vector(0, 0),
 		velocity = Vector(0, 0),
-		friction = -0.2
+		friction = -0.2,
+		rect = Rect(x or 0, y or 0, 16, 32)
 	},
 	{ __index = self })
 end
 
 function player:jump()
-	self.velocity.y = 16
+	self.velocity.y = 30
 end
 
 function player:update(dt)
@@ -45,16 +44,19 @@ function player:update(dt)
 	-- Equations of motion
 	self.velocity = self.velocity + self.acceleration
 	self.position = self.position + self.velocity + 0.5 * self.acceleration
+
+	-- Update rect position
+	self.rect.position = self.position
 end
 
 function player:draw()
 	love.graphics.setColor(255, 255, 0, 255)
 	love.graphics.rectangle(
 		"fill",
-		self.position.x - self.width / 2,
-		self.position.y,
-		self.width,
-		self.height
+		self.rect:get_left(),
+		self.rect:get_bottom(),
+		self.rect.width,
+		self.rect.height
 	)
 end
 
