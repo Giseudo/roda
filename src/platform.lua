@@ -13,7 +13,7 @@ function platform:update()
 end
 
 function platform:draw()
-	love.graphics.setColor(0, 255, 0, 255)
+	love.graphics.setColor(0, 255, 0, 150)
 	love.graphics.rectangle(
 		"fill",
 		self.rect:get_left(),

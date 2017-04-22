@@ -9,6 +9,10 @@ function Rect.new(x, y, w, h)
 	}, Rect)
 end
 
+function Rect:get_half()
+	return Vector(self.width / 2, self.height / 2)
+end
+
 function Rect:get_left()
 	return self.position.x - self.width / 2
 end

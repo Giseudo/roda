@@ -6,13 +6,14 @@ local Platform = require (RODA_SRC .. 'platform')
 local Tilemap = require (RODA_SRC .. 'tilemap')
 
 roda = {
-	scale = 3,
+	scale = 2,
 	unit = 16,
 	shader = nil,
 	shaders = {},
 	camera = Camera(0, 100),
 	player = Player(0, 0),
-	platform = Platform(0, -66, 100, 100),
+	platform1 = Platform(0, -8, 512, 16),
+	platform2 = Platform(256, 56, 512, 16),
 	tilemap = Tilemap(0, 0, 128, 128)
 }
 
@@ -31,38 +32,46 @@ function roda:run()
 	self:set_shader('default')
 end
 
+function roda:collides(other)
+	local deltaX = self.player.position.x - other.position.x
+	local deltaY = self.player.position.y - other.position.y
+	local intersectX = math.abs(deltaX) - (self.player.rect.width / 2 + other.rect.width / 2)
+	local intersectY = math.abs(deltaY) - (self.player.rect.height / 2 + other.rect.height / 2)
+
+	-- If collide
+	if intersectX < 0.0 and intersectY < 0.0 then
+		if intersectX > intersectY then
+			self.player.velocity.x = 0
+
+			if deltaX > 0.0 then
+				self.player.position.x = self.player.position.x - intersectX
+			else
+				self.player.position.x = self.player.position.x + intersectX
+			end
+		else
+			self.player.velocity.y = 0
+
+			if deltaY > 0.0 then
+				self.player.position.y = self.player.position.y - intersectY
+			else
+				self.player.position.y = self.player.position.y + intersectY
+			end
+		end
+
+		return true
+	end
+
+	return false
+end
+
 function roda:update(dt)
 	self:events()
 	self.player:update(dt)
 	self.camera:follow(self.player)
 
-	-- Check for player / platform collision
-
-	if self.player.velocity.y ~= 0 or self.player.velocity.x ~= 0 then
-		local collision = self.player.rect:overlaps(self.platform.rect)
-		if collision then
-			-- If player is falling
-			if self.player.velocity.y < 0 and self.player.rect:get_top() > self.platform.rect:get_top() then
-				self.player.position.y = self.platform.rect:get_top() + self.player.rect.height / 2
-				self.player.velocity.y = 0
-			end
-			-- If player is jumping
-			if self.player.velocity.y > 0 and self.player.rect:get_bottom() < self.platform.rect:get_bottom() then
-				self.player.position.y = self.platform.rect:get_bottom() - self.player.rect.height / 2
-				self.player.velocity.y = 0
-			end
-			-- If player is moving forward
-			if self.player.velocity.x > 0 and self.player.rect:get_left() < self.platform.rect:get_left() then
-				self.player.position.x = self.platform.rect:get_left() - self.player.rect.width / 2
-				self.player.velocity.x = 0
-			end
-			-- If player if moving backward
-			if self.player.velocity.x < 0 and self.player.rect:get_right() > self.platform.rect:get_right() then
-				self.player.position.x = self.platform.rect:get_right() + self.player.rect.width / 2
-				self.player.velocity.x = 0
-			end
-		end
-	end
+	-- Resolve collision for player
+	self:collides(self.platform1)
+	self:collides(self.platform2)
 end
 
 function roda:events()
@@ -82,7 +91,9 @@ function roda:draw()
 
 	self.tilemap:draw()
 	self.player:draw()
-	self.platform:draw()
+	self.platform1:draw()
+	self.platform2:draw()
+
 
 	self.camera:unset()
 end

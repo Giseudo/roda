@@ -5,7 +5,7 @@ function player:new(x, y, width, height)
 		position = Vector(x or 0, y or 0),
 		acceleration = Vector(0, 0),
 		velocity = Vector(0, 0),
-		friction = -0.2,
+		friction = -0.15,
 		rect = Rect(x or 0, y or 0, 16, 32)
 	},
 	{ __index = self })
@@ -17,7 +17,7 @@ end
 
 function player:update(dt)
 	-- Reset acceleration every frame
-	self.acceleration = Vector(0, 0)
+	self.acceleration = Vector(0, -.8)
 
 	-- TODO Move this out here later
 	function love.keypressed(key)
@@ -26,16 +26,16 @@ function player:update(dt)
 		end
 	end
 	if love.keyboard.isDown("left") then
-		self.acceleration.x = -0.75
+		self.acceleration.x = -0.6
 	end
 	if love.keyboard.isDown("right") then
-		self.acceleration.x = 0.75
+		self.acceleration.x = 0.6
 	end
 	if love.keyboard.isDown("down") then
-		self.acceleration.y = -0.75
+		self.acceleration.y = -0.6
 	end
 	if love.keyboard.isDown("up") then
-		self.acceleration.y = 0.75
+		self.acceleration.y = 0.6
 	end
 
 	-- Apply friction
@@ -50,7 +50,7 @@ function player:update(dt)
 end
 
 function player:draw()
-	love.graphics.setColor(255, 255, 0, 255)
+	love.graphics.setColor(255, 0, 0, 150)
 	love.graphics.rectangle(
 		"fill",
 		self.rect:get_left(),
