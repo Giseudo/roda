@@ -1,80 +1,99 @@
-require (GAME_LIB .. 'roda.env')
+require (GAME_LIB .. 'Roda.env')
 require (RODA_SRC .. 'core')
-local Camera = require (RODA_SRC .. 'camera')
-local Player = require (RODA_SRC .. 'player')
-local Platform = require (RODA_SRC .. 'platform')
-local Tilemap = require (RODA_SRC .. 'tilemap')
 
-roda = {
-	scale = 2,
+-- Entities
+local Camera = require (RODA_SRC .. 'entity.camera')
+local Player = require (RODA_SRC .. 'entity.player')
+local Platform = require (RODA_SRC .. 'entity.platform')
+local Tilemap = require (RODA_SRC .. 'entity.tilemap')
+
+-- Systems
+local Collision = require (RODA_SRC .. 'system.collision')
+local Movement = require (RODA_SRC .. 'system.movement')
+local Gravity = require (RODA_SRC .. 'system.gravity')
+
+Roda = {
+	scale = 3,
 	unit = 16,
 	shader = nil,
+	gravity = -.8,
 	shaders = {},
-	camera = Camera(0, 100),
-	player = Player(0, 0),
-	platform1 = Platform(0, -8, 512, 16),
-	platform2 = Platform(256, 56, 512, 16),
+	quadtree = {},
+	systems = {
+		collision = Collision(),
+		movement = Movement(),
+		gravity = Gravity()
+	},
+	camera = Camera(Vector(0, 100)),
+	player = Player(Vector(0, 0), Vector(16, 32)),
+	platform1 = Platform(Vector(0, -16), Vector(512, 32)),
+	platform2 = Platform(Vector(256, 64), Vector(512, 32)),
 	tilemap = Tilemap(0, 0, 128, 128)
 }
 
-function roda:run()
+function Roda:run()
+	-- Graphics defaults
 	love.graphics.setDefaultFilter('nearest', 'nearest', 1)
 	love.graphics.setPointSize(4)
+
+	-- Window defaults
 	love.window.setMode(
 		self.camera.width * self.scale,
 		self.camera.height * self.scale
 	)
+
+	-- Shader defaults
 	self:add_shader(
 		'default',
 		require (RODA_SRC .. 'core.shaders.fragment'),
 		require (RODA_SRC .. 'core.shaders.vertex')
 	)
 	self:set_shader('default')
+
+	-- Add entities to system
+	self.systems.collision:add(self.player)
+	self.systems.movement:add(self.player)
+	self.systems.gravity:add(self.player)
+
+	-- Add entities to quadtree for collision check
+	self.quadtree[#self.quadtree + 1] = self.platform1
+	self.quadtree[#self.quadtree + 1] = self.platform2
 end
 
-function roda:collides(other)
-	local deltaX = self.player.position.x - other.position.x
-	local deltaY = self.player.position.y - other.position.y
-	local intersectX = math.abs(deltaX) - (self.player.rect.width / 2 + other.rect.width / 2)
-	local intersectY = math.abs(deltaY) - (self.player.rect.height / 2 + other.rect.height / 2)
+function Roda:update(dt)
+	self:events()
+	self.camera:follow(self.player)
+	self.player:update(dt)
 
-	-- If collide
-	if intersectX < 0.0 and intersectY < 0.0 then
-		if intersectX > intersectY then
-			self.player.velocity.x = 0
+	-- Update systems
+	self.systems.movement:update(dt)
+	self.systems.gravity:update(dt)
+	self.systems.collision:update(dt)
+end
 
-			if deltaX > 0.0 then
-				self.player.position.x = self.player.position.x - intersectX
-			else
-				self.player.position.x = self.player.position.x + intersectX
-			end
-		else
-			self.player.velocity.y = 0
 
-			if deltaY > 0.0 then
-				self.player.position.y = self.player.position.y - intersectY
-			else
-				self.player.position.y = self.player.position.y + intersectY
-			end
+function Roda:events()
+	-- Player inputs
+	function love.keypressed(key)
+		if key == "space" then
+			self.player:jump()
 		end
-
-		return true
 	end
 
-	return false
-end
+	if love.keyboard.isDown("left") then
+		self.player.controller:move_left()
+	end
+	if love.keyboard.isDown("right") then
+		self.player.controller:move_right()
+	end
+	if love.keyboard.isDown("down") then
+		self.player.controller:move_down()
+	end
+	if love.keyboard.isDown("up") then
+		self.player.controller:move_up()
+	end
 
-function roda:update(dt)
-	self:events()
-	self.player:update(dt)
-	self.camera:follow(self.player)
-
-	-- Resolve collision for player
-	self:collides(self.platform1)
-	self:collides(self.platform2)
-end
-
-function roda:events()
+	-- Camera inputs
 	if love.keyboard.isDown("z") then
 		self.camera:zoom(2)
 	end
@@ -83,28 +102,30 @@ function roda:events()
 	end
 end
 
-function roda:draw()
+function Roda:draw()
 	love.graphics.setShader(self.shader)
 	love.graphics.scale(self.scale, self.scale)
 	love.graphics.clear(100, 100, 120, 255)
+
+	-- Set view matrix
 	self.camera:set()
 
+	-- Draw entities
 	self.tilemap:draw()
-	self.player:draw()
 	self.platform1:draw()
 	self.platform2:draw()
-
+	self.player:draw()
 
 	self.camera:unset()
 end
 
-function roda:set_shader(name)
+function Roda:set_shader(name)
 	self.shader = self.shaders[name]
 end
 
-function roda:add_shader(name, fragment, vertex)
+function Roda:add_shader(name, fragment, vertex)
 	self.shaders[name] = love.graphics.newShader(fragment, vertex)
 end
 
-function roda:quit()
+function Roda:quit()
 end

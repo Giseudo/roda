@@ -1,9 +1,10 @@
+local Transform = require (RODA_SRC .. 'component.transform')
 local camera = {}
 
-function camera:new(x, y, width, height)
+function camera:new(position, width, height)
 	return setmetatable(
 		{
-			position = Vector(x or 0, y or 0),
+			transform = Transform(position or Vector(0, 0)),
 			width = width or 320,
 			height = height or 200,
 			rotation = 0,
@@ -15,36 +16,35 @@ end
 
 function camera:follow(target)
 	self:move(
-		(target.position.x - self.position.x) * 2 * love.timer.getDelta(),
-		0.0
-		--(target.position.y - self.position.y) * 2 * love.timer.getDelta()
+		(target.transform.position.x - self.transform.position.x) * 4 * love.timer.getDelta(),
+		(target.transform.position.y - self.transform.position.y + 50.0) * 4 * love.timer.getDelta()
 	)
 end
 
 function camera:move(x, y)
-	self.position.x = self.position.x + x or 0
-	self.position.y = self.position.y + y or 0
+	self.transform.position.x = self.transform.position.x + x or 0
+	self.transform.position.y = self.transform.position.y + y or 0
 end
 
 function camera:set()
-	local x = math.floor(love.graphics.getWidth() / 2) / roda.scale
-	local y = math.floor(love.graphics.getHeight() / 2) / roda.scale
+	local x = math.floor(love.graphics.getWidth() / 2) / Roda.scale
+	local y = math.floor(love.graphics.getHeight() / 2) / Roda.scale
 
 	-- Set World Coodinate
 	love.graphics.push()
 	love.graphics.rotate(- self.rotation)
 	love.graphics.scale(1 / self.fov, 1 / - self.fov)
 	love.graphics.translate(
-		- self.position.x + x * self.fov,
-		- self.position.y - y * self.fov
+		- self.transform.position.x + x * self.fov,
+		- self.transform.position.y - y * self.fov
 	)
 
 	-- Stencil Mask
 	love.graphics.stencil(function()
 		love.graphics.rectangle(
 			"fill",
-			self.position.x - self.width * self.fov / 2,
-			self.position.y - self.height * self.fov / 2,
+			self.transform.position.x - self.width * self.fov / 2,
+			self.transform.position.y - self.height * self.fov / 2,
 			self.width * self.fov,
 			self.height * self.fov
 		)
@@ -53,8 +53,8 @@ function camera:set()
 end
 
 function camera:move(x, y)
-	self.position.x = x
-	self.position.y = y
+	self.transform.position.x = x
+	self.transform.position.y = y
 end
 
 function camera:unset()
@@ -63,8 +63,8 @@ function camera:unset()
 end
 
 function camera:move(x, y)
-	self.position.x = self.position.x + (x or 0)
-	self.position.y = self.position.y + (y or 0)
+	self.transform.position.x = self.transform.position.x + (x or 0)
+	self.transform.position.y = self.transform.position.y + (y or 0)
 end
 
 function camera:rotate(dt)
