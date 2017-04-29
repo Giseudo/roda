@@ -22,8 +22,18 @@ function tilemap:init()
 			position.y = position.y + Roda.unit / 2 - math.ceil(self.columns / 2) * Roda.unit + Roda.unit * k
 
 			self.tiles[i][k] = nil
+			--self.tiles[i][k] = Tile(position)
 		end
 	end
+end
+
+function tilemap:add(position)
+	local column = 0
+	local row = 0
+
+	-- Resolve tile column and row position
+	-- Check if tile exist
+	-- Add new tile with fixed position
 end
 
 function tilemap:tile_at(x, y)

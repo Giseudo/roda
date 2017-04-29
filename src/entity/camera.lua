@@ -8,7 +8,8 @@ function camera:new(position, width, height)
 			width = width or 320,
 			height = height or 200,
 			rotation = 0,
-			fov = 2
+			fov = 2,
+			viewport = Rect(position, Vector(320 * 2, 200 * 2))
 		},
 		{ __index = camera }
 	)
@@ -38,6 +39,8 @@ function camera:set()
 		- self.transform.position.x + x * self.fov,
 		- self.transform.position.y - y * self.fov
 	)
+
+	self.viewport.position = self.transform.position
 
 	-- Stencil Mask
 	love.graphics.stencil(function()
@@ -71,9 +74,30 @@ function camera:rotate(dt)
 	self.rotation = self.rotation + dt
 end
 
+function camera:mousePosition()
+	local position = Vector(
+		love.mouse.getX() * self.fov,
+		love.mouse.getY() * self.fov
+	)
+
+	-- Center position on the middle of screen & invert Y axis
+	position.x = position.x - love.graphics.getWidth() / 2 * self.fov
+	position.y = -position.y + love.graphics.getHeight() / 2 * self.fov
+
+	-- Divide by engine scale
+	position = position / Roda.scale
+
+	-- Sum with camera position
+	return position + self.transform.position
+end
+
 function camera:zoom(speed)
 	speed = speed or 1
 	self.fov = self.fov + speed * love.timer.getDelta()
+
+	-- Update viewport size
+	self.viewport.size.x = self.width * self.fov
+	self.viewport.size.y = self.height * self.fov
 end
 
 return setmetatable(camera, { __call = camera.new })

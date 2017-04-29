@@ -73,6 +73,7 @@ function Roda:update(dt)
 	self.systems.collision:update(dt)
 end
 
+mouse_position = Vector(0, 0)
 
 function Roda:events()
 	-- Player inputs
@@ -112,11 +113,17 @@ function Roda:draw()
 	-- Set view matrix
 	self.camera:set()
 
+	love.graphics.setColor(0, 0, 255, 50)
+	self.camera.viewport:draw("fill")
+
 	-- Draw entities
 	self.tilemap:draw()
 	self.platform1:draw()
 	self.platform2:draw()
 	self.player:draw()
+
+	love.graphics.points(self.camera:mousePosition().x, self.camera:mousePosition().y)
+	love.graphics.points(0, 0)
 
 	self.camera:unset()
 end
