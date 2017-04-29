@@ -1,3 +1,4 @@
+local Tile = require (RODA_SRC .. 'entity.tile')
 local tilemap = {}
 
 function tilemap:new(x, y, columns, rows)
@@ -5,8 +6,24 @@ function tilemap:new(x, y, columns, rows)
 		x = x,
 		y = y,
 		columns = columns,
-		rows = rows
+		rows = rows,
+		tiles = {}
 	}, { __index = self })
+end
+
+function tilemap:init()
+	for i = 0, self.columns do
+		self.tiles[i] = {}
+
+		for k = 0, self.rows do
+			local position = Vector(self.x, self.y)
+
+			position.x = position.x + Roda.unit / 2 - math.ceil(self.columns / 2) * Roda.unit + Roda.unit * i
+			position.y = position.y + Roda.unit / 2 - math.ceil(self.columns / 2) * Roda.unit + Roda.unit * k
+
+			self.tiles[i][k] = nil
+		end
+	end
 end
 
 function tilemap:tile_at(x, y)
@@ -34,6 +51,14 @@ function tilemap:draw()
 			self.x + math.floor(self.columns / 2) * Roda.unit,
 			self.y - math.floor(self.rows / 2) * Roda.unit + Roda.unit * k
 		)
+	end
+
+	for i = 0, self.columns do
+		for k = 0, self.rows do
+			if self.tiles[i][k] ~= nil then
+				self.tiles[i][k]:draw()
+			end
+		end
 	end
 
 	-- Draw X axis line

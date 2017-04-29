@@ -16,7 +16,7 @@ Roda = {
 	scale = 3,
 	unit = 16,
 	shader = nil,
-	gravity = -.8,
+	gravity = -.6,
 	shaders = {},
 	quadtree = {},
 	systems = {
@@ -26,8 +26,8 @@ Roda = {
 	},
 	camera = Camera(Vector(0, 100)),
 	player = Player(Vector(0, 0), Vector(16, 32)),
-	platform1 = Platform(Vector(0, -16), Vector(512, 32)),
-	platform2 = Platform(Vector(256, 64), Vector(512, 32)),
+	platform1 = Platform(Vector(0, -8), Vector(512, 16)),
+	platform2 = Platform(Vector(256, 56), Vector(512, 16)),
 	tilemap = Tilemap(0, 0, 128, 128)
 }
 
@@ -58,6 +58,8 @@ function Roda:run()
 	-- Add entities to quadtree for collision check
 	self.quadtree[#self.quadtree + 1] = self.platform1
 	self.quadtree[#self.quadtree + 1] = self.platform2
+
+	self.tilemap:init()
 end
 
 function Roda:update(dt)
