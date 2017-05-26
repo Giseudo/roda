@@ -2,17 +2,16 @@ local Transform = require (RODA_SRC .. 'component.transform')
 local camera = {}
 
 function camera:new(position, width, height)
-	return setmetatable(
-		{
-			transform = Transform(position or Vector(0, 0)),
-			width = width or 320,
-			height = height or 200,
-			rotation = 0,
-			fov = 2,
-			viewport = Rect(position, Vector(320 * 2, 200 * 2))
-		},
-		{ __index = camera }
-	)
+	local o = {}
+
+	o.transform = Transform(position or Vector(0, 0))
+	o.width = width or 320
+	o.height = height or 200
+	o.rotation = 0
+	o.fov = 2
+	o.viewport = Rect(position, Vector(o.width * 2, o.height * 2))
+
+	return setmetatable(o, { __index = camera })
 end
 
 function camera:follow(target)

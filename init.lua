@@ -1,6 +1,10 @@
 require (GAME_LIB .. 'Roda.env')
 require (RODA_SRC .. 'core')
 
+-- Core
+local Resources = require (RODA_SRC .. 'core.resources')
+local Logger = require (RODA_SRC .. 'core.logger')
+
 -- Entities
 local Camera = require (RODA_SRC .. 'entity.camera')
 local Player = require (RODA_SRC .. 'entity.player')
@@ -13,11 +17,12 @@ local Movement = require (RODA_SRC .. 'system.movement')
 local Gravity = require (RODA_SRC .. 'system.gravity')
 
 Roda = {
+	resources = Resources(),
+	logger = Logger(),
 	scale = 3,
 	unit = 16,
 	shader = nil,
 	gravity = -.6,
-	shaders = {},
 	quadtree = {},
 	systems = {
 		collision = Collision(),
@@ -41,14 +46,6 @@ function Roda:run()
 		self.camera.width * self.scale,
 		self.camera.height * self.scale
 	)
-
-	-- Shader defaults
-	self:add_shader(
-		'default',
-		require (RODA_SRC .. 'core.shaders.fragment'),
-		require (RODA_SRC .. 'core.shaders.vertex')
-	)
-	self:set_shader('default')
 
 	-- Add entities to system
 	self.systems.collision:add(self.player)
@@ -115,13 +112,16 @@ function Roda:draw()
 
 	love.graphics.setColor(0, 0, 255, 50)
 	self.camera.viewport:draw("fill")
+	self:set_shader('default')
 
 	-- Draw entities
 	self.tilemap:draw()
 	self.platform1:draw()
 	self.platform2:draw()
+
 	self.player:draw()
 
+	self:set_shader('default')
 	love.graphics.points(self.camera:mousePosition().x, self.camera:mousePosition().y)
 	love.graphics.points(0, 0)
 
@@ -129,11 +129,9 @@ function Roda:draw()
 end
 
 function Roda:set_shader(name)
-	self.shader = self.shaders[name]
-end
-
-function Roda:add_shader(name, fragment, vertex)
-	self.shaders[name] = love.graphics.newShader(fragment, vertex)
+	local shader = self.resources.shaders[name]
+	self.shader = shader
+	love.graphics.setShader(shader)
 end
 
 function Roda:quit()
