@@ -38,8 +38,7 @@ Roda = {
 
 function Roda:run()
 	-- Graphics defaults
-	love.graphics.setDefaultFilter('nearest', 'nearest', 1)
-	love.graphics.setPointSize(4)
+	love.graphics.setPointSize(8)
 
 	-- Window defaults
 	love.window.setMode(
@@ -118,10 +117,8 @@ function Roda:draw()
 	self.tilemap:draw()
 	self.platform1:draw()
 	self.platform2:draw()
-
 	self.player:draw()
 
-	self:set_shader('default')
 	love.graphics.points(self.camera:mousePosition().x, self.camera:mousePosition().y)
 	love.graphics.points(0, 0)
 

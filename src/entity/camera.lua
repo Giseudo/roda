@@ -8,7 +8,7 @@ function camera:new(position, width, height)
 	o.width = width or 320
 	o.height = height or 200
 	o.rotation = 0
-	o.fov = 2
+	o.fov = 1.5
 	o.viewport = Rect(position, Vector(o.width * 2, o.height * 2))
 
 	return setmetatable(o, { __index = camera })
