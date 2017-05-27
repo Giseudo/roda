@@ -19,6 +19,8 @@ local Gravity = require (RODA_SRC .. 'system.gravity')
 Roda = {
 	resources = Resources(),
 	logger = Logger(),
+	width = 320,
+	height = 200,
 	scale = 3,
 	unit = 16,
 	shader = nil,
@@ -29,11 +31,6 @@ Roda = {
 		movement = Movement(),
 		gravity = Gravity()
 	},
-	camera = Camera(Vector(0, 100)),
-	player = Player(Vector(0, 0), Vector(16, 32)),
-	platform1 = Platform(Vector(0, -8), Vector(512, 16)),
-	platform2 = Platform(Vector(256, 56), Vector(512, 16)),
-	tilemap = Tilemap(0, 0, 128, 128)
 }
 
 function Roda:run()
@@ -42,9 +39,15 @@ function Roda:run()
 
 	-- Window defaults
 	love.window.setMode(
-		self.camera.width * self.scale,
-		self.camera.height * self.scale
+		self.width * self.scale,
+		self.height * self.scale
 	)
+
+	self.camera = Camera(Vector(0, 100), Vector(self.scale, self.scale))
+	self.player = Player(Vector(0, 0), Vector(16, 32))
+	self.platform1 = Platform(Vector(0, -8), Vector(512, 16))
+	self.platform2 = Platform(Vector(256, 56), Vector(512, 16))
+	self.tilemap = Tilemap(0, 0, 128, 128)
 
 	-- Add entities to system
 	self.systems.collision:add(self.player)
@@ -72,10 +75,17 @@ end
 mouse_position = Vector(0, 0)
 
 function Roda:events()
-	-- Player inputs
 	function love.keypressed(key)
+		-- Player inputs
 		if key == "space" then
 			self.player:jump()
+		end
+		-- Camera inputs
+		if love.keyboard.isDown("z") then
+			self.camera:zoom(1)
+		end
+		if love.keyboard.isDown("x") then
+			self.camera:zoom(-1)
 		end
 	end
 
@@ -91,19 +101,9 @@ function Roda:events()
 	if love.keyboard.isDown("up") then
 		self.player.controller:move_up()
 	end
-
-	-- Camera inputs
-	if love.keyboard.isDown("z") then
-		self.camera:zoom(2)
-	end
-	if love.keyboard.isDown("x") then
-		self.camera:zoom(-2)
-	end
 end
 
 function Roda:draw()
-	love.graphics.setShader(self.shader)
-	love.graphics.scale(self.scale, self.scale)
 	love.graphics.clear(100, 100, 120, 255)
 
 	-- Set view matrix
@@ -119,6 +119,7 @@ function Roda:draw()
 	self.platform2:draw()
 	self.player:draw()
 
+	love.graphics.setColor(255, 0, 0, 255)
 	love.graphics.points(self.camera:mousePosition().x, self.camera:mousePosition().y)
 	love.graphics.points(0, 0)
 

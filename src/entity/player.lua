@@ -21,12 +21,10 @@ function player:jump()
 end
 
 function player:update(dt)
-
 end
 
 function player:draw()
 	Roda:set_shader('outline')
-	love.graphics.setColor(255, 0, 255)
 	Roda.shader:send('stepSize', {
 		1 / self.img:getWidth(),
 		1 / self.img:getHeight()
@@ -47,8 +45,8 @@ function player:draw()
 		self.transform.position.y - 16
 	)
 
-	--love.graphics.setColor(255, 0, 0, 150)
-	--self.collider.shape:draw('fill')
+	love.graphics.setColor(255, 0, 0, 255)
+	self.collider.shape:draw('line')
 end
 
 return setmetatable(player, { __call = player.new })
