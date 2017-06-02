@@ -1,6 +1,8 @@
 require (GAME_LIB .. 'Roda.env')
 require (RODA_SRC .. 'core')
 
+local tiny = require 'tiny'
+
 -- Core
 local Resources = require (RODA_SRC .. 'core.resources')
 local Logger = require (RODA_SRC .. 'core.logger')
@@ -12,9 +14,11 @@ local Platform = require (RODA_SRC .. 'entity.platform')
 local Tilemap = require (RODA_SRC .. 'entity.tilemap')
 
 -- Systems
-local Collision = require (RODA_SRC .. 'system.collision')
-local Movement = require (RODA_SRC .. 'system.movement')
-local Gravity = require (RODA_SRC .. 'system.gravity')
+local CollisionSystem = require (RODA_SRC .. 'system.collision')
+local MovementSystem = require (RODA_SRC .. 'system.movement')
+local GravitySystem = require (RODA_SRC .. 'system.gravity')
+local RenderSystem = require (RODA_SRC .. 'system.render')
+local AnimationSystem = require (RODA_SRC .. 'system.animation')
 
 Roda = {
 	resources = Resources(),
@@ -26,11 +30,7 @@ Roda = {
 	shader = nil,
 	gravity = -.6,
 	quadtree = {},
-	systems = {
-		collision = Collision(),
-		movement = Movement(),
-		gravity = Gravity()
-	},
+	world = tiny.world(),
 }
 
 function Roda:run()
@@ -49,10 +49,15 @@ function Roda:run()
 	self.platform2 = Platform(Vector(256, 56), Vector(512, 16))
 	self.tilemap = Tilemap(0, 0, 128, 128)
 
-	-- Add entities to system
-	self.systems.collision:add(self.player)
-	self.systems.movement:add(self.player)
-	self.systems.gravity:add(self.player)
+	-- Add systems
+	self.world:addSystem(GravitySystem())
+	self.world:addSystem(MovementSystem())
+	self.world:addSystem(CollisionSystem())
+	self.world:addSystem(RenderSystem())
+	self.world:addSystem(AnimationSystem())
+
+	-- Add entities
+	self.world:addEntity(self.player)
 
 	-- Add entities to quadtree for collision check
 	self.quadtree[#self.quadtree + 1] = self.platform1
@@ -64,12 +69,8 @@ end
 function Roda:update(dt)
 	self:events()
 	self.camera:follow(self.player)
-	self.player:update(dt)
 
-	-- Update systems
-	self.systems.movement:update(dt)
-	self.systems.gravity:update(dt)
-	self.systems.collision:update(dt)
+	self.world:update(dt, tiny.requireAll('isUpdateSystem'))
 end
 
 mouse_position = Vector(0, 0)
@@ -117,7 +118,9 @@ function Roda:draw()
 	self.tilemap:draw()
 	self.platform1:draw()
 	self.platform2:draw()
-	self.player:draw()
+
+	self.world:update(dt, tiny.requireAll('isDrawingSystem'))
+	self.world:update(dt, tiny.requireAll('isDebugSystem'))
 
 	love.graphics.setColor(255, 0, 0, 255)
 	love.graphics.points(self.camera:mousePosition().x, self.camera:mousePosition().y)

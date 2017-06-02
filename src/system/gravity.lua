@@ -1,25 +1,27 @@
+local Tiny = require 'tiny'
+
 local gravity = {}
+gravity.__index = gravity
 
 function gravity:new()
-	return setmetatable({
-		entities = {}
-	}, { __index = self })
+	local o = setmetatable({
+		filter = Tiny.requireAll('body'),
+		isUpdateSystem = true
+	}, gravity)
+
+	return Tiny.processingSystem(o)
 end
 
-function gravity:add(e)
-	self.entities[#self.entities + 1] = e
-end
+function gravity:process(e, dt)
+	-- Apply gravity force
+	e.body.acceleration.y = Roda.gravity
 
-function gravity:update(dt)
-	for _, entity in pairs(self.entities) do
-		-- Apply gravity force
-		entity.body.acceleration.y = Roda.gravity
-
-		-- Max gravity velocity
-		if entity.body.velocity.y <= -10.0 then
-			entity.body.velocity.y = -10.0
-		end
+	-- Max gravity velocity
+	if e.body.velocity.y <= -10.0 then
+		e.body.velocity.y = -10.0
 	end
 end
 
-return setmetatable(gravity, { __call = gravity.new })
+return setmetatable(gravity, {
+	__call = gravity.new
+})

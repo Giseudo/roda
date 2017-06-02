@@ -1,48 +1,49 @@
+local Tiny = require 'tiny'
 local movement = {}
+movement.__index = movement
 
 function movement:new()
-	return setmetatable({
-		entities = {}
-	}, { __index = self })
+	local o = setmetatable({
+		filter = Tiny.requireAll('controller', 'body', 'transform'),
+		isUpdateSystem = true
+	}, movement)
+
+	return Tiny.processingSystem(o)
 end
 
-function movement:add(e)
-	self.entities[#self.entities + 1] = e
-end
+function movement:process(e, dt)
+	-- Reset acceleration every frame
+	e.body.acceleration.x = 0
 
-function movement:update(dt)
-	for _, entity in pairs(self.entities) do
-		-- Reset acceleration every frame
-		entity.body.acceleration.x = 0
-
-		-- Check movement direction
-		if entity.controller.forward then
-			entity.body.acceleration.x = entity.controller.speed
-		end
-
-		if entity.controller.backward then
-			entity.body.acceleration.x = -entity.controller.speed
-		end
-
-		if entity.controller.downward then
-			entity.body.acceleration.y = -entity.controller.speed
-		end
-
-		if entity.controller.upward then
-			entity.body.acceleration.y = entity.controller.speed
-		end
-
-		-- Apply friction
-		entity.body.acceleration.x = entity.body.acceleration.x + entity.body.velocity.x * entity.body.friction.x
-		entity.body.acceleration.y = entity.body.acceleration.y + entity.body.velocity.y * entity.body.friction.y
-
-		-- Equations of motion
-		entity.body.velocity = entity.body.velocity + entity.body.acceleration
-		entity.transform.position = entity.transform.position + entity.body.velocity + 0.5 * entity.body.acceleration
-
-		-- Reset controller direction
-		entity.controller:reset()
+	-- Check movement direction
+	if e.controller.forward then
+		e.body.acceleration.x = e.controller.speed
 	end
+
+	if e.controller.backward then
+		e.body.acceleration.x = -e.controller.speed
+	end
+
+	if e.controller.downward then
+		e.body.acceleration.y = -e.controller.speed
+	end
+
+	if e.controller.upward then
+		e.body.acceleration.y = e.controller.speed
+	end
+
+	-- Apply friction
+	e.body.acceleration.x = e.body.acceleration.x + e.body.velocity.x * e.body.friction.x
+	e.body.acceleration.y = e.body.acceleration.y + e.body.velocity.y * e.body.friction.y
+
+	-- Equations of motion
+	e.body.velocity = e.body.velocity + e.body.acceleration
+	e.transform.position = e.transform.position + e.body.velocity + 0.5 * e.body.acceleration
+
+	-- Reset controller direction
+	e.controller:reset()
 end
 
-return setmetatable(movement, { __call = movement.new })
+return setmetatable(movement, {
+	__call = movement.new
+})

@@ -1,13 +1,16 @@
 local ASSETS_DIR = 'assets/'
 
 local resources = {}
+resources.__index = resources
+
+function resources:__tostring()
+	return "Resources"
+end
 
 function resources:new()
-	local o = {}
-
-	o.shaders = {}
-
-	return setmetatable(o, { __index = resources })
+	return setmetatable({
+		shaders = {}
+	}, resources)
 end
 
 function resources:load_shader(name, vertex, fragment, geometry)
@@ -22,7 +25,7 @@ function resources:load_shader(name, vertex, fragment, geometry)
 	end
 
 	if geometry then
-		shader.geometry = self:read('shaders' .. geometry)
+		shader.geometry = self:read('shaders/' .. geometry)
 	end
 
 	self.shaders[name] = love.graphics.newShader(shader.vertex, shader.fragment, shader.geometry)
@@ -32,10 +35,10 @@ function resources:read(filepath)
 	local content = love.filesystem.read(ASSETS_DIR .. filepath)
 
 	if content == nil then
-		Roda.logger:warn('File "' .. filepath .. '" not found.', self)
+		Roda.logger:error('File "' .. filepath .. '" not found.', self)
 	end
 
 	return content
 end
 
-return setmetatable(resources, { __call = resources.new })
+return setmetatable(resources, { __call = function(_, ...) return resources.new(...) end })

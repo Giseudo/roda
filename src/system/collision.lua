@@ -1,30 +1,30 @@
-local collision_system = {}
+local Tiny = require 'tiny'
 
-function collision_system:new()
-	return setmetatable({
-		entities = {}
-	}, { __index = self })
+local collision = {}
+collision.__index = collision
+
+function collision:new()
+	local o = setmetatable({
+		filter = Tiny.requireAll('collider', 'transform', 'body'),
+		isUpdateSystem = true
+	}, collision)
+
+	return Tiny.processingSystem(o)
 end
 
-function collision_system:add(e)
-	self.entities[#self.entities + 1] = e
-end
+function collision:process(e, dt)
+	-- Update shape position
+	e.collider.shape.position = e.transform.position
 
-function collision_system:update(dt)
-	for _, entity in pairs(self.entities) do
-		-- Update shape position
-		entity.collider.shape.position = entity.transform.position
-
-		-- Check for collisions with entities on quadtree
-		for _, entity2 in pairs(Roda.quadtree) do
-			if entity ~= entity2 then
-				self:resolve(entity, entity2)
-			end
+	-- Check for collisions with entities on quadtree
+	for _, other in pairs(Roda.quadtree) do
+		if e ~= other then
+			self:resolve(e, other)
 		end
 	end
 end
 
-function collision_system:resolve(first, second)
+function collision:resolve(first, second)
 	-- Return if shape is not solid
 	if second.collider.solid ~= true then
 		return
@@ -57,5 +57,6 @@ function collision_system:resolve(first, second)
 	end
 end
 
-
-return setmetatable(collision_system, { __call = collision_system.new })
+return setmetatable(collision, {
+	__call = collision.new
+})
