@@ -1,9 +1,10 @@
+local Transform = require (RODA_SRC .. 'component.transform')
 local Collider = require (RODA_SRC .. 'component.collider')
 local platform = {}
 
 function platform:new(position, size)
 	return setmetatable({
-		position = position,
+		transform = Transform(position),
 		collider = Collider(Rect(position, size), true)
 	},
 	{ __index = self })

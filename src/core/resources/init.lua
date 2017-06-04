@@ -4,7 +4,7 @@ local resources = {}
 resources.__index = resources
 
 function resources:__tostring()
-	return "Resources"
+	return "resources"
 end
 
 function resources:new()
@@ -41,4 +41,6 @@ function resources:read(filepath)
 	return content
 end
 
-return setmetatable(resources, { __call = function(_, ...) return resources.new(...) end })
+return setmetatable(resources, {
+	__call = resources.new
+})

@@ -12,6 +12,10 @@ function animation:new()
 	return Tiny.processingSystem(o)
 end
 
+function animation:onAdd(e)
+	e.sprite.frame = e.animator.start
+end
+
 function animation:process(e, dt)
 	e.animator.timer = e.animator.timer + dt
 

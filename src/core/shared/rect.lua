@@ -36,7 +36,6 @@ function Rect:draw(mode)
 		self.size.x,
 		self.size.y
 	)
-
 end
 
 setmetatable(Rect, { __call = function(_, ...) return Rect.new(...) end })

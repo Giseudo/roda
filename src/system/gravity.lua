@@ -14,7 +14,8 @@ end
 
 function gravity:process(e, dt)
 	-- Apply gravity force
-	e.body.acceleration.y = Roda.gravity
+	e.body.acceleration.x = Roda.physics.gravity.x
+	e.body.acceleration.y = Roda.physics.gravity.y
 
 	-- Max gravity velocity
 	if e.body.velocity.y <= -10.0 then

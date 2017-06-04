@@ -5,11 +5,15 @@ collision.__index = collision
 
 function collision:new()
 	local o = setmetatable({
-		filter = Tiny.requireAll('collider', 'transform', 'body'),
+		filter = Tiny.requireAll('collider', 'transform'),
 		isUpdateSystem = true
 	}, collision)
 
 	return Tiny.processingSystem(o)
+end
+
+function collision:onAdd(e)
+	Roda.bus:emit('physics/quadtree/add', e)
 end
 
 function collision:process(e, dt)
@@ -17,7 +21,7 @@ function collision:process(e, dt)
 	e.collider.shape.position = e.transform.position
 
 	-- Check for collisions with entities on quadtree
-	for _, other in pairs(Roda.quadtree) do
+	for _, other in pairs(Roda.physics.quadtree) do
 		if e ~= other then
 			self:resolve(e, other)
 		end

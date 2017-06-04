@@ -41,4 +41,6 @@ function logger:error(message, owner)
 	print(os.date("%c"), 'ERROR', owner, message)
 end
 
-return setmetatable(logger, { __call = function(_, ...) return logger.new(...) end })
+return setmetatable(logger, {
+	__call = logger.new
+})

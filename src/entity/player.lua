@@ -22,7 +22,7 @@ function player:new(position, size)
 end
 
 function player:jump()
-	self.body.velocity.y = 10
+	self.body.velocity.y = 11
 end
 
 return setmetatable(player, { __call = player.new })
