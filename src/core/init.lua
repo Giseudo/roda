@@ -44,7 +44,7 @@ function core:update(dt)
 end
 
 function core:draw()
-	love.graphics.clear(100, 100, 120, 255)
+	--love.graphics.clear(100, 100, 120, 255)
 	self:set_shader('default')
 
 	-- Set view matrix

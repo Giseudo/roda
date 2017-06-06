@@ -81,7 +81,7 @@ function tilemap:draw()
 	)
 
 	-- Draw Y axis line
-	love.graphics.setColor(0, 255, 0, 50)
+	love.graphics.setColor(0, 0, 255, 50)
 	love.graphics.line(
 		self.x,
 		self.y + math.ceil(self.rows / 2) * Roda.graphics.unit,
