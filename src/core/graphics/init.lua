@@ -8,6 +8,7 @@ function graphics:new(width, height, scale)
 	o.height = height or 200
 	o.scale = scale or 3
 	o.unit = 16
+	batches = {}
 
 	return setmetatable(o, graphics)
 end

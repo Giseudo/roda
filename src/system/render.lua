@@ -6,15 +6,16 @@ render.__index = render
 function render:new()
 	local o = setmetatable({
 		filter = Tiny.requireAll('sprite', 'transform'),
-		isDrawingSystem = true
+		isDrawingSystem = true,
+		timer = 0
 	}, render)
 
 	return Tiny.processingSystem(o)
 end
 
 function render:process(e, dt)
-	-- Outline sprite
-	--[[love.graphics.setColor(255, 0, 255, 255)
+	--[[ Outline sprite
+	love.graphics.setColor(255, 0, 255, 255)
 	Roda:set_shader('outline')
 
 	Roda.shader:send('stepSize', {
@@ -27,21 +28,16 @@ function render:process(e, dt)
 		e.sprite.quad,
 		e.transform.position.x - 16,
 		e.transform.position.y - 16
-	)]]
+	)
 
-	-- Regular sprite
 	love.graphics.setColor(255, 255, 255, 255)
-	Roda:set_shader('glitch')
-	local image1 = love.graphics.newImage('assets/images/glitch.jpeg')
-	Roda.shader:send('iChannel1', image1)
-	Roda.shader:send('iGlobalTime', love.timer.getDelta() * 2)
+	Roda:set_shader('default')]]
 	love.graphics.draw(
 		e.sprite.texture,
 		e.sprite.quad,
 		e.transform.position.x - 16,
 		e.transform.position.y - 16
 	)
-	Roda:set_shader('default')
 
 	e.sprite.quad = love.graphics.newQuad(e.sprite.frame * e.sprite.width, 0, e.sprite.width, e.sprite.height, e.sprite.texture:getDimensions())
 end
