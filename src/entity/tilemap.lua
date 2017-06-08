@@ -72,7 +72,7 @@ function tilemap:draw()
 	end
 
 	-- Draw X axis line
-	love.graphics.setColor(255, 0, 0, 50)
+	love.graphics.setColor(255, 0, 0, 150)
 	love.graphics.line(
 		self.x - math.ceil(self.columns / 2) * Roda.graphics.unit,
 		self.y,
@@ -81,13 +81,15 @@ function tilemap:draw()
 	)
 
 	-- Draw Y axis line
-	love.graphics.setColor(0, 0, 255, 50)
+	love.graphics.setColor(0, 0, 255, 150)
 	love.graphics.line(
 		self.x,
 		self.y + math.ceil(self.rows / 2) * Roda.graphics.unit,
 		self.x,
 		self.y - math.floor(self.rows / 2) * Roda.graphics.unit
 	)
+
+	love.graphics.setColor(255, 255, 255, 255)
 end
 
 return setmetatable(tilemap, { __call = tilemap.new })

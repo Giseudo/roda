@@ -17,6 +17,8 @@ function collision_debug:process(e, dt)
 	e.collider.shape.position = e.transform.position
 	love.graphics.setColor(0, 255, 0, 150)
 	e.collider.shape:draw('line')
+
+	love.graphics.setColor(255, 255, 255, 255)
 end
 
 return setmetatable(collision_debug, {

@@ -13,7 +13,7 @@ function b2:new(position, size)
 
 	o.transform = Transform(position)
 	o.body = Body(Vector(0, 0), Vector(0, 0), Vector(-0.15, 0.0))
-	o.collider = Collider(Rect(position, size))
+	o.collider = Collider(Rect(position, size), true)
 	o.sprite = Sprite('assets/images/B2.png', 32, 32, 0)
 	o.animator = Animator('Idle', 0, 6)
 

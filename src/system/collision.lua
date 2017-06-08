@@ -46,7 +46,7 @@ function collision:resolve(first, second)
 			if delta.x > 0.0 then
 				first.transform.position.x = first.transform.position.x - intersect.x
 			else
-				first.transform.position.x = first.transform.position.x + intersect.y
+				first.transform.position.x = first.transform.position.x + intersect.x
 			end
 		else
 			first.body.velocity.y = 0
