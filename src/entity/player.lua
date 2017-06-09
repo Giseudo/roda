@@ -15,7 +15,7 @@ function player:new(position, size)
 	o.body = Body(Vector(0, 0), Vector(0, 0), Vector(-0.15, 0.0))
 	o.collider = Collider(Rect(position, size))
 	o.controller = Controller(0.3)
-	o.sprite = Sprite('assets/images/B2.png', 32, 32, 0)
+	o.sprite = Sprite('assets/images/B2.png', 32, 32, 0, 4)
 	o.animator = Animator('Idle', 7, 11)
 
 	return setmetatable(o, player)

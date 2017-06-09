@@ -22,7 +22,7 @@ function collision:process(e, dt)
 
 	-- Check for collisions with entities on quadtree
 	for _, other in pairs(Roda.physics.quadtree) do
-		if e ~= other then
+		if e ~= other and e.body ~= nil then
 			self:resolve(e, other)
 		end
 	end

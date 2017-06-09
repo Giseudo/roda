@@ -33,7 +33,7 @@ function camera:set()
 	-- Set World Coodinate
 	love.graphics.push()
 	love.graphics.scale(self.transform.scale.x, - self.transform.scale.y)
-	love.graphics.rotate(- self.rotation)
+	love.graphics.rotate(self.rotation)
 	love.graphics.translate(
 		- self.transform.position.x + x,
 		- self.transform.position.y - y

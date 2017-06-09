@@ -1,22 +1,21 @@
 local Transform = require (RODA_SRC .. 'component.transform')
+local Sprite = require (RODA_SRC .. 'component.sprite')
+local Collider = require (RODA_SRC .. 'component.collider')
+
 local tile = {}
+tile.__index = tile
 
-function tile:new(position)
-	return setmetatable({
-		transform = Transform(position)
-	},
-	{ __index = self })
-end
+function tile:new(file, column, row, layer)
+	local o = {}
 
-function tile:draw()
-	love.graphics.setColor(255, 0, 255, 150)
-	love.graphics.rectangle(
-		"fill",
-		self.transform.position.x - Roda.unit / 2,
-		self.transform.position.y - Roda.unit / 2,
-		Roda.unit,
-		Roda.unit
-	)
+	o.transform = Transform()
+	o.collider = Collider(Rect(o.transform.position, Vector(16, 16)), true)
+	o.sprite = Sprite(file, 16, 16, 0, 4)
+	o.column = column
+	o.row = row
+	o.layer = layer
+
+	return setmetatable(o, tile)
 end
 
 return setmetatable(tile, { __call = tile.new })

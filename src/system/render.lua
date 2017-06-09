@@ -7,7 +7,6 @@ function render:new()
 	local o = setmetatable({
 		filter = Tiny.requireAll('sprite', 'transform'),
 		isDrawingSystem = true,
-		timer = 0
 	}, render)
 
 	return Tiny.processingSystem(o)
@@ -35,11 +34,10 @@ function render:process(e, dt)
 	love.graphics.draw(
 		e.sprite.texture,
 		e.sprite.quad,
-		e.transform.position.x - 16,
-		e.transform.position.y - 16
+		e.transform.position.x - e.sprite.width / 2,
+		e.transform.position.y - e.sprite.height / 2
 	)
 
-	e.sprite.quad = love.graphics.newQuad(e.sprite.frame * e.sprite.width, 0, e.sprite.width, e.sprite.height, e.sprite.texture:getDimensions())
 end
 
 return setmetatable(render, {
