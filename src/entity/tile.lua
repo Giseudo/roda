@@ -10,7 +10,7 @@ function tile:new(file, column, row, layer)
 
 	o.transform = Transform()
 	o.collider = Collider(Rect(o.transform.position, Vector(16, 16)), true)
-	o.sprite = Sprite(file, 16, 16, 0, 4)
+	o.sprite = Sprite('terrain_01', file, 16, 16, 0, 4)
 	o.column = column
 	o.row = row
 	o.layer = layer

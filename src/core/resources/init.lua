@@ -9,7 +9,8 @@ end
 
 function resources:new()
 	return setmetatable({
-		shaders = {}
+		shaders = {},
+		batches = {}
 	}, resources)
 end
 

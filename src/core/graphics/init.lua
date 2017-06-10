@@ -8,7 +8,7 @@ function graphics:new(width, height, scale)
 	o.height = height or 200
 	o.scale = scale or 3
 	o.unit = 16
-	batches = {}
+	o.batches = {}
 
 	return setmetatable(o, graphics)
 end
@@ -22,6 +22,25 @@ function graphics:init()
 		self.width * self.scale,
 		self.height * self.scale
 	)
+end
+
+function graphics:get_batch(batch)
+	if self.batches[batch] == nil then
+		Roda.logger:error('Batch "' .. batch .. '" not found.', self)
+		return
+	end
+
+	return self.batches[batch]
+end
+
+function graphics:add_batch(batch, file)
+	if self.batches[batch] == nil then
+		local image = love.graphics.newImage(file)
+
+		self.batches[batch] = love.graphics.newSpriteBatch(image)
+	end
+
+	return self.batches[batch]
 end
 
 return setmetatable(graphics, {

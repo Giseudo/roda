@@ -18,7 +18,6 @@ function core:new()
 
 	o.shader = nil
 	o.debug = true
-	o.timer = 0
 	o.background = love.graphics.newImage('assets/images/sky_night_01.png')
 	o.glitch = love.graphics.newImage('assets/images/glitch.jpeg')
 	o.bus = Signal()
@@ -43,7 +42,6 @@ end
 function core:update(dt)
 	self.camera:follow(Game.player)
 	self.world:update(dt, Tiny.requireAll('isUpdateSystem'))
-	self.timer = self.timer + dt
 end
 
 function core:draw()
@@ -70,13 +68,16 @@ function core:draw()
 
 			-- Draw
 			self.world:update(love.timer.getDelta(), Tiny.requireAll('isDrawingSystem'))
+
+			-- Draw sprite batches
+			for _, batch in pairs(self.graphics.batches) do
+				love.graphics.draw(batch)
+			end
 		love.graphics.setCanvas()
 	self.camera:unset()
 
 	-- Draw game
-	Roda:set_shader('glitch')
-	Roda.shader:send('iChannel1', self.glitch)
-	Roda.shader:send('iGlobalTime', self.timer)
+	love.graphics.setShader()
 	love.graphics.draw(self.canvas)
 
 	if self.debug then
