@@ -9,6 +9,8 @@ local Resources = require (RODA_SRC .. 'core.resources')
 local Graphics = require (RODA_SRC .. 'core.graphics')
 local World = require (RODA_SRC .. 'core.world')
 local Physics = require (RODA_SRC .. 'core.physics')
+local Input = require (RODA_SRC .. 'core.input')
+local Editor = require (RODA_SRC .. 'core.editor')
 
 local core = {}
 core.__index = core
@@ -26,6 +28,8 @@ function core:new()
 	o.graphics = Graphics()
 	o.resources = Resources()
 	o.physics = Physics()
+	o.input = Input()
+	o.editor = Editor()
 
 	return setmetatable(o, core)
 end
@@ -33,6 +37,8 @@ end
 function core:run()
 	self.graphics:init()
 	self.physics:init()
+	self.input:init()
+	self.editor:init()
 
 	self.camera = Camera(Vector(0, 100), Vector(self.graphics.scale, self.graphics.scale))
 	self.canvas = love.graphics.newCanvas()
@@ -40,7 +46,8 @@ function core:run()
 end
 
 function core:update(dt)
-	self.camera:follow(Game.player)
+	self.input:update(dt)
+	self.camera:follow(Game.dummy)
 	self.world:update(dt, Tiny.requireAll('isUpdateSystem'))
 end
 

@@ -1,13 +1,15 @@
 local controller = {}
 
-function controller:new(speed)
+function controller:new(speed, player)
 	return setmetatable(
 		{
 			speed = speed or 0.5,
 			backward = false,
 			forward = false,
 			upward = false,
-			downward = false
+			downward = false,
+			jumping = false,
+			player = player or false
 		},
 		{ __index = controller }
 	)
@@ -29,11 +31,16 @@ function controller:move_down()
 	self.downward = true
 end
 
+function controller:jump()
+	self.jumping = true
+end
+
 function controller:reset()
 	self.backward = false
 	self.forward = false
 	self.upward = false
 	self.downward = false
+	self.jumping = false
 end
 
 return setmetatable(controller, { __call = controller.new })

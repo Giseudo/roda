@@ -32,6 +32,10 @@ function movement:process(e, dt)
 		e.body.acceleration.y = e.controller.speed
 	end
 
+	if e.controller.jumping then
+		e.body.velocity.y = 11
+	end
+
 	-- Apply friction
 	e.body.acceleration.x = e.body.acceleration.x + e.body.velocity.x * e.body.friction.x
 	e.body.acceleration.y = e.body.acceleration.y + e.body.velocity.y * e.body.friction.y
