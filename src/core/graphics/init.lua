@@ -6,7 +6,7 @@ function graphics:new(width, height, scale)
 
 	o.width = width or 480
 	o.height = height or 270
-	o.scale = scale or 4
+	o.scale = scale or 3
 	o.unit = 16
 	o.batches = {}
 

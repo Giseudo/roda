@@ -23,11 +23,13 @@ function tilemap:onAdd(e)
 	Roda.bus:register('input/mouse/pressed', function(event)
 		local x, y = e:get_tile_index(event.position)
 
-		if e.tiles[x][y] == nil then
-			local tile = Tile('assets/images/terrain_01.png', x, y, 0)
-			e:add_tile(tile)
-			Roda.world:add(tile)
-			Roda.world:refresh()
+		if x ~= nil and y ~= nil then
+			if e.tiles[x][y] == nil then
+				local tile = Tile('assets/images/terrain_01.png', x, y, 0)
+				e:add_tile(tile)
+				Roda.world:add(tile)
+				Roda.world:refresh()
+			end
 		end
 	end)
 end
@@ -39,8 +41,7 @@ function tilemap:process(e, dt)
 
 			if tile ~= nil then
 				-- Update tile position
-				tile.transform.position.x = 8 - e.transform.position.x - math.ceil(e.columns / 2) * Roda.graphics.unit + Roda.graphics.unit * i
-				tile.transform.position.y = 8 + e.transform.position.y + math.ceil(e.rows / 2) * Roda.graphics.unit - tile.sprite.height - Roda.graphics.unit * k
+				tile.transform.position = e:get_tile_position(i, k)
 			end
 		end
 	end

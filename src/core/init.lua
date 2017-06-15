@@ -20,6 +20,7 @@ function core:new()
 
 	o.shader = nil
 	o.debug = true
+	o.state = 'editor'
 	o.glitch = love.graphics.newImage('assets/images/glitch.jpeg')
 	o.bus = Signal()
 	o.world = World()
@@ -46,8 +47,9 @@ end
 
 function core:update(dt)
 	self.input:update(dt)
-	self.camera:follow(Game.dummy)
-	self.world:update(dt, Tiny.requireAll('isUpdateSystem'))
+	if self.state == 'game' then
+		self.world:update(dt, Tiny.requireAll('isUpdateSystem'))
+	end
 	self.timer = self.timer + dt
 end
 

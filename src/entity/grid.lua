@@ -45,9 +45,13 @@ function grid:get_tile_index(position)
 	for i = 0, self.columns do
 		for k = 0, self.rows do
 			local tile_position = self:get_tile_position(i, k)
-			local distance = Vector.distance(tile_position, position)
+			local dx = position.x - tile_position.x
+			local px = 16 / 2 - math.abs(dx)
 
-			if distance < 16 then
+			local dy = position.y - tile_position.y
+			local py = 16 / 2 - math.abs(dy)
+
+			if px > 0 and py > 0 then
 				return i, k
 			end
 		end

@@ -17,8 +17,8 @@ end
 
 function camera:follow(target)
 	self:move(
-		(target.transform.position.x - self.transform.position.x) * 3 * love.timer.getDelta(),
-		(target.transform.position.y - self.transform.position.y + 50.0) * 3 * love.timer.getDelta()
+		math.floor((target.transform.position.x - self.transform.position.x) * 3 * love.timer.getDelta()),
+		math.floor((target.transform.position.y - self.transform.position.y + 50.0) * 3 * love.timer.getDelta())
 	)
 end
 
