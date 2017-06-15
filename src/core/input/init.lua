@@ -30,7 +30,7 @@ function input:update(dt)
 				Roda.bus:emit('input/pressed', i)
 			end
 		end
-		Roda.bus:emit('input/pressed/key', key)
+		Roda.bus:emit('input/keyboard/pressed', key)
 	end
 
 	-- Key pressing
@@ -38,6 +38,30 @@ function input:update(dt)
 		if love.keyboard.isDown(key) then
 			Roda.bus:emit('input/pressing', i)
 		end
+	end
+
+	-- Mouse pressed
+	function love.mousepressed(x, y, button)
+		Roda.bus:emit('input/mouse/pressed', {
+			position = Roda.camera:mousePosition(x, y),
+			button = button
+		})
+	end
+
+	-- Mouse released
+	function love.mousereleased(x, y, button)
+		Roda.bus:emit('input/mouse/released', {
+			position = Roda.camera:mousePosition(x, y),
+			button = button
+		})
+	end
+
+	-- Mouse moved
+	function love.mousemoved(x, y, dx, dy)
+		Roda.bus:emit('input/mouse/moved', {
+			position = Roda.camera:mousePosition(x, y),
+			delta = Roda.camera:mousePosition(dx, dy),
+		})
 	end
 end
 

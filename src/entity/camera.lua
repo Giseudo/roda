@@ -6,6 +6,7 @@ function camera:new(position, scale)
 
 	o.transform = Transform(position, scale)
 	o.rotation = 0
+	o.background = love.graphics.newImage('assets/images/sky_night_01.png')
 	o.viewport = Rect(position, Vector(
 		love.graphics.getWidth() / o.transform.scale.x,
 		love.graphics.getHeight() / o.transform.scale.y
@@ -32,11 +33,11 @@ function camera:set()
 
 	-- Set World Coodinate
 	love.graphics.push()
-	love.graphics.scale(self.transform.scale.x, - self.transform.scale.y)
+	love.graphics.scale(self.transform.scale.x, self.transform.scale.y)
 	love.graphics.rotate(self.rotation)
 	love.graphics.translate(
 		- self.transform.position.x + x,
-		- self.transform.position.y - y
+		- self.transform.position.y + y
 	)
 
 	self.viewport.position = self.transform.position
@@ -60,21 +61,17 @@ function camera:rotate(dt)
 	self.rotation = self.rotation + dt
 end
 
-function camera:mousePosition()
-	local position = Vector(
-		love.mouse.getX(),
-		love.mouse.getY()
-	)
+function camera:mousePosition(x, y)
+	local position = Vector(x, y)
 
 	-- Center position on the middle of screen & invert Y axis
 	position.x = position.x - love.graphics.getWidth() / 2
-	position.y = -position.y + love.graphics.getHeight() / 2
+	position.y = - position.y + love.graphics.getHeight() / 2
 
-	-- Divide by engine scale
 	position = position / self.transform.scale
+	position = position + self.transform.position
 
-	-- Sum with camera position
-	return position + self.transform.position
+	return position
 end
 
 function camera:zoom(value)

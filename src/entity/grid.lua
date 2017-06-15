@@ -41,6 +41,31 @@ function grid:add_tile(tile)
 	self:update_tile(tile)
 end
 
+function grid:get_tile_index(position)
+	for i = 0, self.columns do
+		for k = 0, self.rows do
+			local tile_position = self:get_tile_position(i, k)
+			local distance = Vector.distance(tile_position, position)
+
+			if distance < 16 then
+				return i, k
+			end
+		end
+	end
+
+	return nil, nil
+end
+
+function grid:get_tile_position(x, y)
+	local position = Vector(
+		8 - self.transform.position.x - math.ceil(self.columns / 2) * Roda.graphics.unit + Roda.graphics.unit * x,
+		8 + self.transform.position.y + math.ceil(self.rows / 2) * Roda.graphics.unit - Roda.graphics.unit - Roda.graphics.unit * y
+	)
+
+	return position
+end
+
+
 function grid:update_tile(tile)
 	if tile == nil then
 		return

@@ -4,9 +4,9 @@ graphics.__index = graphics
 function graphics:new(width, height, scale)
 	local o = {}
 
-	o.width = width or 320
-	o.height = height or 200
-	o.scale = scale or 3
+	o.width = width or 480
+	o.height = height or 270
+	o.scale = scale or 4
 	o.unit = 16
 	o.batches = {}
 
@@ -20,7 +20,10 @@ function graphics:init()
 	-- Window defaults
 	love.window.setMode(
 		self.width * self.scale,
-		self.height * self.scale
+		self.height * self.scale,
+		{
+			display = 2
+		}
 	)
 end
 

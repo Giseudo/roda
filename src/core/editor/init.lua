@@ -8,7 +8,7 @@ function editor:new()
 end
 
 function editor:init()
-	Roda.bus:register('input/pressed/key', function(key)
+	Roda.bus:register('input/keyboard/pressed', function(key)
 		-- Shortcuts
 		if key == 'd' then
 			if Roda.debug == true then
@@ -25,6 +25,9 @@ function editor:init()
 		if key == 'x' then
 			Roda.camera:zoom(-1)
 		end
+	end)
+
+	Roda.bus:register('input/mouse/pressed', function(event)
 	end)
 end
 
