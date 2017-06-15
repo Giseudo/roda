@@ -12,6 +12,10 @@ function tilemap_debug:new()
 	return Tiny.processingSystem(o)
 end
 
+function tilemap_debug:preProcess(e)
+	Roda.bus:emit('camera/set')
+end
+
 function tilemap_debug:process(e, dt)
 	-- Set grid color
 	love.graphics.setColor(255, 255, 255, 30)
@@ -55,6 +59,10 @@ function tilemap_debug:process(e, dt)
 	)
 
 	love.graphics.setColor(255, 255, 255, 255)
+end
+
+function tilemap_debug:postProcess(dt)
+	Roda.bus:emit('camera/unset')
 end
 
 return setmetatable(tilemap_debug, {

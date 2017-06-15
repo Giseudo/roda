@@ -1,0 +1,21 @@
+require 'asciidoctor'
+require 'asciidoctor-diagram/ditaa'
+require 'asciidoctor-diagram/plantuml'
+
+Bundler.require :default
+
+guard :shell do
+	watch(/\.adoc$/) {|m|
+
+		*path = m[0].split("/")
+		first = path[0..-2].join('/')
+		last = path.length > 1 ? '/' : ''
+
+		Asciidoctor.convert_file first + last + 'index.adoc',
+		safe: 'safe',
+		attributes: {
+			'stylesdir' => '/docs/styles',
+			'icons' => 'font',
+		}
+	}
+end

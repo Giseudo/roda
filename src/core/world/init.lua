@@ -9,6 +9,13 @@ function world:new()
 	return setmetatable(o, world)
 end
 
+function world:init()
+	Roda.bus:register('world/add', function(e)
+		self:add(e)
+		self:refresh()
+	end)
+end
+
 return setmetatable(world, {
 	__index = Tiny,
 	__call = world.new

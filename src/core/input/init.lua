@@ -43,7 +43,7 @@ function input:update(dt)
 	-- Mouse pressed
 	function love.mousepressed(x, y, button)
 		Roda.bus:emit('input/mouse/pressed', {
-			position = Roda.camera:mousePosition(x, y),
+			position = Roda.scene.camera:get_coords(x, y),
 			button = button
 		})
 	end
@@ -51,7 +51,7 @@ function input:update(dt)
 	-- Mouse released
 	function love.mousereleased(x, y, button)
 		Roda.bus:emit('input/mouse/released', {
-			position = Roda.camera:mousePosition(x, y),
+			position = Roda.scene.camera:get_coords(x, y),
 			button = button
 		})
 	end
@@ -59,13 +59,10 @@ function input:update(dt)
 	-- Mouse moved
 	function love.mousemoved(x, y, dx, dy)
 		Roda.bus:emit('input/mouse/moved', {
-			position = Roda.camera:mousePosition(x, y),
-			delta = Roda.camera:mousePosition(dx, dy),
+			position = Roda.scene.camera:get_coords(x, y),
+			delta = Roda.scene.camera:get_coords(dx, dy),
 		})
 	end
-end
-
-function input:keyboard()
 end
 
 return setmetatable(input, {

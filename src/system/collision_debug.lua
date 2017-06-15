@@ -12,6 +12,10 @@ function collision_debug:new()
 	return Tiny.processingSystem(o)
 end
 
+function collision_debug:preProcess(e)
+	Roda.bus:emit('camera/set')
+end
+
 function collision_debug:process(e, dt)
 	-- Update shape position
 	e.collider.shape.position = e.transform.position
@@ -19,6 +23,10 @@ function collision_debug:process(e, dt)
 	e.collider.shape:draw('line')
 
 	love.graphics.setColor(255, 255, 255, 255)
+end
+
+function collision_debug:postProcess(dt)
+	Roda.bus:emit('camera/unset')
 end
 
 return setmetatable(collision_debug, {

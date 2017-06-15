@@ -16,6 +16,10 @@ function render:onAdd(e)
 	e.sprite.id = e.sprite.batch:add(e.sprite.quads[e.sprite.frame])
 end
 
+function render:preProcess(dt)
+	Roda.bus:emit('camera/set')
+end
+
 function render:process(e, dt)
 	e.sprite.batch:set(
 		e.sprite.id,
@@ -23,7 +27,15 @@ function render:process(e, dt)
 		e.transform.position.x - e.sprite.width / 2,
 		e.transform.position.y - e.sprite.height / 2
 	)
+end
 
+function render:postProcess(dt)
+	-- Draw sprite batches
+	for _, batch in pairs(Roda.graphics.batches) do
+		love.graphics.draw(batch)
+	end
+
+	Roda.bus:emit('camera/unset')
 end
 
 return setmetatable(render, {

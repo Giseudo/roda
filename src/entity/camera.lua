@@ -11,57 +11,12 @@ function camera:new(position, scale)
 		love.graphics.getWidth() / o.transform.scale.x,
 		love.graphics.getHeight() / o.transform.scale.y
 	))
+	o.target = {}
 
 	return setmetatable(o, { __index = camera })
 end
 
-function camera:follow(target)
-	self:move(
-		math.floor((target.transform.position.x - self.transform.position.x) * 3 * love.timer.getDelta()),
-		math.floor((target.transform.position.y - self.transform.position.y + 50.0) * 3 * love.timer.getDelta())
-	)
-end
-
-function camera:move(x, y)
-	self.transform.position.x = self.transform.position.x + x or 0
-	self.transform.position.y = self.transform.position.y + y or 0
-end
-
-function camera:set()
-	local x = math.floor(love.graphics.getWidth() / 2) / self.transform.scale.x
-	local y = math.floor(love.graphics.getHeight() / 2) / self.transform.scale.y
-
-	-- Set World Coodinate
-	love.graphics.push()
-	love.graphics.scale(self.transform.scale.x, self.transform.scale.y)
-	love.graphics.rotate(self.rotation)
-	love.graphics.translate(
-		- self.transform.position.x + x,
-		- self.transform.position.y + y
-	)
-
-	self.viewport.position = self.transform.position
-end
-
-function camera:move(x, y)
-	self.transform.position.x = x
-	self.transform.position.y = y
-end
-
-function camera:unset()
-	love.graphics.pop()
-end
-
-function camera:move(x, y)
-	self.transform.position.x = self.transform.position.x + (x or 0)
-	self.transform.position.y = self.transform.position.y + (y or 0)
-end
-
-function camera:rotate(dt)
-	self.rotation = self.rotation + dt
-end
-
-function camera:mousePosition(x, y)
+function camera:get_coords(x, y)
 	local position = Vector(x, y)
 
 	-- Center position on the middle of screen & invert Y axis
@@ -78,9 +33,9 @@ function camera:zoom(value)
 	self.transform.scale.x = math.max(math.min(self.transform.scale.x + value, 4), 1)
 	self.transform.scale.y = math.max(math.min(self.transform.scale.y + value, 4), 1)
 
-	-- Update viewport size
+	--[[ Update viewport size
 	self.viewport.size.x = love.graphics.getWidth() / self.transform.scale.x
-	self.viewport.size.y = love.graphics.getHeight() / self.transform.scale.y
+	self.viewport.size.y = love.graphics.getHeight() / self.transform.scale.y]]
 end
 
 return setmetatable(camera, { __call = camera.new })
