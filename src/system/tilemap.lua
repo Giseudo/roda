@@ -14,8 +14,8 @@ function tilemap:new()
 end
 
 function tilemap:onAdd(e)
-	Roda.bus:register('tilemap/add', function(tile)
-		e:add_tile(tile)
+	Roda.bus:register('tilemap/add', function(tile, x, y)
+		e:add_tile(tile, x, y)
 		Roda.world:add(tile)
 		Roda.world:refresh()
 	end)
@@ -25,10 +25,7 @@ function tilemap:onAdd(e)
 
 		if x ~= nil and y ~= nil then
 			if e.tiles[x][y] == nil then
-				local tile = Tile('assets/images/terrain_01.png', x, y, 0)
-				e:add_tile(tile)
-				Roda.world:add(tile)
-				Roda.world:refresh()
+				Roda.bus:emit('tilemap/add', Tile(e:get_tile_position(x, y), 'assets/images/terrain_01.png'), x, y)
 			end
 		end
 	end)
