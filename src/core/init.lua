@@ -43,7 +43,7 @@ function core:run()
 	self.scene:init()
 
 	self.canvas = love.graphics.newCanvas()
-	self.timer = 0
+	self.time = 0
 end
 
 function core:update(dt)
@@ -51,7 +51,7 @@ function core:update(dt)
 	if self.state == 'game' then
 		self.world:update(dt, Tiny.requireAll('isUpdateSystem'))
 	end
-	self.timer = self.timer + dt
+	self.time = self.time + dt
 end
 
 function core:draw()

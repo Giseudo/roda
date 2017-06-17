@@ -21,15 +21,10 @@ function editor:init()
 		-- Camera inputs
 		if key == 'z' then
 			Roda.bus:emit('camera/zoom', 1)
-			--Roda.camera:zoom(1)
 		end
 		if key == 'x' then
 			Roda.bus:emit('camera/zoom', -1)
-			--Roda.camera:zoom(-1)
 		end
-	end)
-
-	Roda.bus:register('input/mouse/pressed', function(event)
 	end)
 end
 

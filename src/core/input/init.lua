@@ -63,6 +63,13 @@ function input:update(dt)
 			delta = Roda.scene.camera:get_coords(dx, dy),
 		})
 	end
+
+	if love.mouse.isDown(1) then
+		Roda.bus:emit('input/mouse/pressing', {
+			position = Roda.scene.camera:get_coords(love.mouse.getX(), love.mouse.getY()),
+			button = 'left'
+		})
+	end
 end
 
 return setmetatable(input, {

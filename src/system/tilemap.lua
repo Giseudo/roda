@@ -20,15 +20,19 @@ function tilemap:onAdd(e)
 		Roda.world:refresh()
 	end)
 
-	Roda.bus:register('input/mouse/pressed', function(event)
-		local x, y = e:get_tile_index(event.position)
-
-		if x ~= nil and y ~= nil then
-			if e.tiles[x][y] == nil then
-				Roda.bus:emit('tilemap/add', Tile(e:get_tile_position(x, y), 'assets/images/terrain_01.png'), x, y)
-			end
-		end
+	Roda.bus:register('input/mouse/pressing', function(event)
+		self:add_tile(event, e)
 	end)
+end
+
+function tilemap:add_tile(event, grid)
+	local x, y = grid:get_tile_index(event.position)
+
+	if x ~= nil and y ~= nil then
+		if grid.tiles[x][y] == nil then
+			Roda.bus:emit('tilemap/add', Tile(grid:get_tile_position(x, y), 'assets/images/terrain_01.png'), x, y)
+		end
+	end
 end
 
 function tilemap:process(e, dt)
