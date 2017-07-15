@@ -6,7 +6,7 @@ function camera:new(position, scale)
 
 	o.transform = Transform(position, scale)
 	o.rotation = 0
-	o.background = love.graphics.newImage('assets/images/sky_night_01.png')
+	o.background = nil
 	o.viewport = Rect(position, Vector(
 		love.graphics.getWidth() / o.transform.scale.x,
 		love.graphics.getHeight() / o.transform.scale.y

@@ -9,7 +9,6 @@ function tile:new(position, file, layer)
 	local o = {}
 
 	o.transform = Transform(position)
-	o.collider = Collider(Rect(o.transform.position, Vector(16, 16)), true)
 	o.sprite = Sprite('terrain_01', file, 16, 16, 0, 4)
 	o.layer = layer or 0
 

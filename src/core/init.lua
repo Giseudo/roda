@@ -20,7 +20,6 @@ function core:new()
 	o.shader = nil
 	o.debug = true
 	o.state = 'editor'
-	o.glitch = love.graphics.newImage('assets/images/glitch.jpeg')
 	o.bus = Signal()
 	o.world = World()
 	o.logger = Logger()
@@ -51,6 +50,11 @@ function core:update(dt)
 	if self.state == 'game' then
 		self.world:update(dt, Tiny.requireAll('isUpdateSystem'))
 	end
+
+	if self.debug then
+		self.editor:update()
+	end
+
 	self.time = self.time + dt
 end
 
@@ -71,8 +75,13 @@ function core:draw()
 		-- Draw debug
 		if self.debug then
 			self.world:update(dt, Tiny.requireAll('isDebugSystem'))
+			self.scene.ground:debug()
 		end
 	love.graphics.setCanvas()
+
+	if self.debug then
+		self.editor:draw()
+	end
 end
 
 function core:set_shader(name)

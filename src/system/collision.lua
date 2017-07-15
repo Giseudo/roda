@@ -28,6 +28,10 @@ function collision:process(e, dt)
 	end
 end
 
+function collision:point()
+
+end
+
 function collision:resolve(first, second)
 	-- Return if shape is not solid
 	if second.collider.solid ~= true then
@@ -49,14 +53,14 @@ function collision:resolve(first, second)
 				first.transform.position.x = first.transform.position.x + intersect.x
 			end
 		else
-			first.body.velocity.y = 0
-			first.body.acceleration.y = 0
-
 			if delta.y > 0.0 then
 				first.transform.position.y = first.transform.position.y - intersect.y
 			else
 				first.transform.position.y = first.transform.position.y + intersect.y
 			end
+
+			first.body.velocity.y = 0
+			first.body.acceleration.y = 0
 		end
 	end
 end

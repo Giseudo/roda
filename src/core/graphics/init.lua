@@ -6,7 +6,7 @@ function graphics:new(width, height, scale)
 
 	o.width = width or 480
 	o.height = height or 270
-	o.scale = scale or 3
+	o.scale = scale or 2
 	o.unit = 16
 	o.batches = {}
 
@@ -22,7 +22,7 @@ function graphics:init()
 		self.width * self.scale,
 		self.height * self.scale,
 		{
-			display = 2
+			display = 1
 		}
 	)
 end
@@ -40,7 +40,7 @@ function graphics:add_batch(batch, file)
 	if self.batches[batch] == nil then
 		local image = love.graphics.newImage(file)
 
-		self.batches[batch] = love.graphics.newSpriteBatch(image)
+		self.batches[batch] = love.graphics.newSpriteBatch(image, 3000)
 	end
 
 	return self.batches[batch]

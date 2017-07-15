@@ -5,7 +5,7 @@ gravity.__index = gravity
 
 function gravity:new()
 	local o = setmetatable({
-		filter = Tiny.requireAll('body'),
+		filter = Tiny.requireAll('body', 'collider'),
 		isUpdateSystem = true
 	}, gravity)
 

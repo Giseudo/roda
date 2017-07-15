@@ -14,25 +14,18 @@ function tilemap:new()
 end
 
 function tilemap:onAdd(e)
-	Roda.bus:register('tilemap/add', function(tile, x, y)
-		e:add_tile(tile, x, y)
-		Roda.world:add(tile)
-		Roda.world:refresh()
-	end)
+	Roda.bus:register('tilemap/add', function(file, position)
+		local x, y = e:get_tile_index(position)
 
-	Roda.bus:register('input/mouse/pressing', function(event)
-		self:add_tile(event, e)
-	end)
-end
-
-function tilemap:add_tile(event, grid)
-	local x, y = grid:get_tile_index(event.position)
-
-	if x ~= nil and y ~= nil then
-		if grid.tiles[x][y] == nil then
-			Roda.bus:emit('tilemap/add', Tile(grid:get_tile_position(x, y), 'assets/images/terrain_01.png'), x, y)
+		if x ~= nil and y ~= nil then
+			if e.tiles[x][y] == nil then
+				local tile = Tile(e:get_tile_position(x, y), 'assets/textures/' .. file)
+				e:add_tile(tile, x, y)
+				Roda.world:add(tile)
+				Roda.world:refresh()
+			end
 		end
-	end
+	end)
 end
 
 function tilemap:process(e, dt)
