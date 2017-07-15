@@ -59,16 +59,16 @@ function collision:resolve(first, second)
 				first.transform.position.y = first.transform.position.y + intersect.y
 			end
 
+			-- Check if body is grounded
+			local dy = first.collider.shape:get_bottom() - second.collider.shape.position.y - 1
+			local py = second.collider.shape:get_half().y - math.abs(dy)
+
+			if py > 0 then
+				first.body.grounded = true
+			end
+
 			first.body.velocity.y = 0
 			first.body.acceleration.y = 0
-		end
-
-		-- Check if body is grounded
-		local dy = first.collider.shape:get_bottom() - second.collider.shape.position.y - 1
-		local py = second.collider.shape:get_half().y - math.abs(dy)
-
-		if py > 0 then
-			first.body.grounded = true
 		end
 	end
 end

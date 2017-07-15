@@ -69,6 +69,13 @@ function core:draw()
 	love.graphics.setCanvas(self.canvas)
 		love.graphics.clear(100, 100, 120, 255)
 
+		if self.scene.camera.background then
+			love.graphics.draw(self.scene.camera.background,
+				0, 0, 0,
+				self.graphics.scale, self.graphics.scale
+			)
+		end
+
 		-- Draw
 		self.world:update(love.timer.getDelta(), Tiny.requireAll('isDrawingSystem'))
 

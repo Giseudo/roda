@@ -41,7 +41,7 @@ function movement:process(e, dt)
 	Roda.bus:register('input/released', function(button)
 		if e.body.velocity.y > 0 then
 			if button == 'jump' then
-				e.body.velocity.y = math.min(e.body.velocity.y, 4)
+				e.body.velocity.y = math.min(e.body.velocity.y, 2)
 			end
 		end
 	end)
@@ -53,9 +53,6 @@ function movement:process(e, dt)
 	-- Equations of motion
 	e.body.velocity = e.body.velocity + e.body.acceleration
 	e.transform.position = e.transform.position + e.body.velocity + 0.5 * e.body.acceleration
-
-	-- Reset controller direction
-	e.controller:reset()
 end
 
 return setmetatable(movement, {

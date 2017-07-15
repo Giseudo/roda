@@ -12,6 +12,7 @@ function camera:new(position, scale)
 		love.graphics.getHeight() / o.transform.scale.y
 	))
 	o.target = {}
+	o.follow = 'both' -- both, horizontal, vertical
 
 	return setmetatable(o, { __index = camera })
 end
@@ -29,13 +30,17 @@ function camera:get_coords(x, y)
 	return position
 end
 
+function camera:set_background(image)
+	self.background = love.graphics.newImage(image)
+end
+
 function camera:zoom(value)
 	self.transform.scale.x = math.max(math.min(self.transform.scale.x + value, 4), 1)
 	self.transform.scale.y = math.max(math.min(self.transform.scale.y + value, 4), 1)
 
-	--[[ Update viewport size
+	-- Update viewport size
 	self.viewport.size.x = love.graphics.getWidth() / self.transform.scale.x
-	self.viewport.size.y = love.graphics.getHeight() / self.transform.scale.y]]
+	self.viewport.size.y = love.graphics.getHeight() / self.transform.scale.y
 end
 
 return setmetatable(camera, { __call = camera.new })

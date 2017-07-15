@@ -8,9 +8,9 @@ scene.__index = scene
 
 function scene:new()
 	local o = {
-		background = Layer(200, 20),
-		ground = Layer(200, 20),
-		foreground = Layer(200, 20)
+		background = Layer(500, 20),
+		ground = Layer(500, 20),
+		foreground = Layer(500, 20)
 	}
 
 	o.camera = Camera()
@@ -25,6 +25,8 @@ function scene:init()
 	Roda.bus:register('camera/unset', function() self:camera_unset() end)
 	Roda.bus:register('camera/target', function(e) self.camera.target = e end)
 	Roda.bus:register('camera/zoom', function(i) self.camera:zoom(i) end)
+	Roda.bus:register('camera/follow', function(direction) self.camera.follow = direction end)
+	Roda.bus:register('camera/background', function(file) self.camera:set_background('assets/textures/' .. file) end)
 	Roda.bus:emit('world/add', self.camera)
 
 	Roda.bus:register('tile/add', function(file, position)

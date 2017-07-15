@@ -5,7 +5,7 @@ player.__index = player
 
 function player:new()
 	local o = setmetatable({
-		filter = Tiny.requireAll('controller'),
+		filter = Tiny.requireAll('controller', 'animator', 'sprite', 'transform'),
 		isUpdateSystem = true
 	}, player)
 
@@ -41,6 +41,24 @@ function player:onAdd(e)
 end
 
 function player:process(e, dt)
+	if e.controller.forward or e.controller.backward then
+		e.animator:set_animation('moving')
+
+		if e.transform.facing == 'forward' and e.controller.backward then
+			e.transform.facing = 'backward'
+			e.transform.scale.x = e.transform.scale.x * - 1
+		end
+
+		if e.transform.facing == 'backward' and e.controller.forward then
+			e.transform.facing = 'forward'
+			e.transform.scale.x = e.transform.scale.x * -1
+		end
+	elseif e.controller.forward == false and e.controller.backward == false then
+		e.animator:set_animation('idle')
+	end
+
+	-- Reset controller direction
+	e.controller:reset()
 end
 
 return setmetatable(player, {

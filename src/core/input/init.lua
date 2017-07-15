@@ -12,8 +12,8 @@ end
 function input:init()
 	self.scheme = {
 		keyboard = {
-			jump = 'space',
-			up = 'up',
+			jump = '',
+			up = 'space',
 			down = 'down',
 			left = 'left',
 			right = 'right'

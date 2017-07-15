@@ -13,19 +13,21 @@ function animation:new()
 end
 
 function animation:onAdd(e)
-	e.sprite.frame = e.animator.start
+	e.sprite.frame = e.animator.current.start
 end
 
 function animation:process(e, dt)
 	e.animator.timer = e.animator.timer + dt
 
 	if e.animator.timer > e.animator.speed then
-		e.sprite.frame = e.sprite.frame + 1
 		e.animator.timer = 0
 
-		if e.sprite.frame > e.animator.start + e.animator.length then
-			e.sprite.frame = e.animator.start
+		if e.animator.frame > e.animator.current.start + e.animator.current.length then
+			e.animator.frame = e.animator.current.start
 		end
+
+		e.sprite.frame = e.animator.frame
+		e.animator.frame = e.animator.frame + 1
 	end
 end
 
