@@ -33,6 +33,16 @@ function input:update(dt)
 		Roda.bus:emit('input/keyboard/pressed', key)
 	end
 
+	-- Key released
+	function love.keyreleased(key)
+		for i, other in pairs(self.scheme.keyboard) do
+			if key == other then
+				Roda.bus:emit('input/released', i)
+			end
+		end
+		Roda.bus:emit('input/keyboard/released', key)
+	end
+
 	-- Key pressing
 	for i, key in pairs(self.scheme.keyboard) do
 		if love.keyboard.isDown(key) then

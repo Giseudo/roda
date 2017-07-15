@@ -32,9 +32,19 @@ function movement:process(e, dt)
 		e.body.acceleration.y = e.controller.speed
 	end
 
-	if e.controller.jumping then
-		e.body.velocity.y = 11
+	-- Jump velocity
+	if e.controller.jumping and e.body.grounded then
+		e.body.velocity.y = e.body.jump_velocity
 	end
+
+	-- Jump limit
+	Roda.bus:register('input/released', function(button)
+		if e.body.velocity.y > 0 then
+			if button == 'jump' then
+				e.body.velocity.y = math.min(e.body.velocity.y, 4)
+			end
+		end
+	end)
 
 	-- Apply friction
 	e.body.acceleration.x = e.body.acceleration.x + e.body.velocity.x * e.body.friction.x

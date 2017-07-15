@@ -24,12 +24,12 @@ function collision:process(e, dt)
 	for _, other in pairs(Roda.physics.quadtree) do
 		if e ~= other and e.body ~= nil then
 			self:resolve(e, other)
+
+			if e.body.velocity.y > 0 then
+				e.body.grounded = false
+			end
 		end
 	end
-end
-
-function collision:point()
-
 end
 
 function collision:resolve(first, second)
@@ -61,6 +61,14 @@ function collision:resolve(first, second)
 
 			first.body.velocity.y = 0
 			first.body.acceleration.y = 0
+		end
+
+		-- Check if body is grounded
+		local dy = first.collider.shape:get_bottom() - second.collider.shape.position.y - 1
+		local py = second.collider.shape:get_half().y - math.abs(dy)
+
+		if py > 0 then
+			first.body.grounded = true
 		end
 	end
 end
