@@ -20,6 +20,7 @@ function core:new()
 	o.shader = nil
 	o.debug = true
 	o.state = 'editor'
+	o.glitch = love.graphics.newImage('assets/textures/glitch.jpg')
 	o.bus = Signal()
 	o.world = World()
 	o.logger = Logger()
@@ -62,12 +63,19 @@ function core:draw()
 	-- Reset graphics
 	love.graphics.setColor(255, 255, 255, 255)
 
-	-- Draw game
+	--[[ Draw glitchy game
+	self:set_shader('glitch')
+	self.shader:send('channel0', self.glitch)
+	self.shader:send('time', self.time)
+	love.graphics.draw(self.canvas)]]
+
+	-- Draw normal game
 	self:set_shader('default')
 	love.graphics.draw(self.canvas)
 
 	love.graphics.setCanvas(self.canvas)
 		love.graphics.clear(100, 100, 120, 255)
+		self:set_shader('default')
 
 		if self.scene.camera.background then
 			love.graphics.draw(self.scene.camera.background,

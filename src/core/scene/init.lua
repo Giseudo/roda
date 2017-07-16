@@ -29,12 +29,12 @@ function scene:init()
 	Roda.bus:register('camera/background', function(file) self.camera:set_background('assets/textures/' .. file) end)
 	Roda.bus:emit('world/add', self.camera)
 
-	Roda.bus:register('tile/add', function(file, position)
+	Roda.bus:register('tile/add', function(name, file, position)
 		local x, y = self.ground:get_tile_index(position)
 
 		if x ~= 0 and y ~= 0 then
 			if self.ground.tiles[x][y] == nil then
-				local tile = Tile(self.ground:get_tile_position(x, y), 'assets/textures/' .. file)
+				local tile = Tile(self.ground:get_tile_position(x, y), name, 'assets/textures/' .. file)
 				self.ground:add_tile(tile, x, y)
 				Roda.world:add(tile)
 				Roda.world:refresh()
@@ -42,7 +42,7 @@ function scene:init()
 		end
 	end)
 
-	Roda.bus:register('tile/add/block', function(file, x, y, dx, dy)
+	Roda.bus:register('tile/add/block', function(name, file, x, y, dx, dy)
 		local tiles = {}
 		local columns, rows = 0, 0
 
@@ -53,7 +53,7 @@ function scene:init()
 				columns = columns + 1
 
 				for k = math.min(y, dy), math.max(y, dy) do
-					local tile = Tile(self.ground:get_tile_position(i, k), 'assets/textures/' .. file)
+					local tile = Tile(self.ground:get_tile_position(i, k), name, 'assets/textures/' .. file)
 					tiles[i][k] = tile
 					rows = rows + 1
 

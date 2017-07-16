@@ -5,11 +5,11 @@ local Collider = require (RODA_SRC .. 'component.collider')
 local tile = {}
 tile.__index = tile
 
-function tile:new(position, file, layer)
+function tile:new(position, name, file, layer)
 	local o = {}
 
 	o.transform = Transform(position)
-	o.sprite = Sprite('terrain_01', file, 16, 16, 0, 4)
+	o.sprite = Sprite(name, file, 16, 16, 0, 4)
 	o.layer = layer or 0
 
 	return setmetatable(o, tile)

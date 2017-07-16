@@ -1,11 +1,11 @@
 local animator = {}
 animator.__index = animator
 
-function animator:new(name, start, length)
+function animator:new(name, start, length, speed)
 	local o = {}
 
 	o.timer = 0
-	o.speed = 0.1
+	o.speed = speed or 0.1
 	o.frame = 0
 	o.animations = {}
 	o.current = nil

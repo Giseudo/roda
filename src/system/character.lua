@@ -29,8 +29,8 @@ function character:process(e, dt)
 	end
 
 	if e.controller.dashing == true then
-		if e.animator.animations['dash_2'] then
-			e.animator:set_animation('dash_2')
+		if e.animator.animations['dash_1'] then
+			e.animator:set_animation('dash_1')
 		end
 	elseif e.controller.flying == true then
 		if e.animator.animations['flying'] then

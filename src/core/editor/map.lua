@@ -19,7 +19,7 @@ end
 function editor_map:init()
 	Roda.bus:register('input/mouse/pressing', function(event)
 		if self.placing_tiles then
-			Roda.bus:emit('tile/add', 'terrain_02.png', event.position)
+			Roda.bus:emit('tile/add', 'terrain_02', 'terrain_02.png', event.position)
 		end
 
 		if self.placing_blocks then
@@ -41,7 +41,8 @@ function editor_map:init()
 
 				Roda.bus:emit(
 					'tile/add/block',
-					'terrain_02.png',
+					'terrain_01',
+					'terrain_01.png',
 					self.start_drag.x,
 					self.start_drag.y,
 					self.end_drag.x,
