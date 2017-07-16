@@ -19,7 +19,7 @@ end
 function animation:process(e, dt)
 	e.animator.timer = e.animator.timer + dt
 
-	if e.animator.timer > e.animator.speed then
+	if e.animator.timer > e.animator.current.speed then
 		e.animator.timer = 0
 
 		if e.animator.frame > e.animator.current.start + e.animator.current.length then

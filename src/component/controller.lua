@@ -9,6 +9,7 @@ function controller:new(speed, player)
 			upward = false,
 			downward = false,
 			jumping = false,
+			flying = false,
 			player = player or false
 		},
 		{ __index = controller }
@@ -35,12 +36,19 @@ function controller:jump()
 	self.jumping = true
 end
 
+function controller:fly()
+	self.flying = true
+end
+
+function controller:dash()
+	self.dashing = true
+end
+
 function controller:reset()
+	self.upward = false
 	self.backward = false
 	self.forward = false
-	self.upward = false
 	self.downward = false
-	self.jumping = false
 end
 
 return setmetatable(controller, { __call = controller.new })

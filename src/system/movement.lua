@@ -4,6 +4,7 @@ movement.__index = movement
 
 function movement:new()
 	local o = setmetatable({
+		dash_timer = 0,
 		filter = Tiny.requireAll('controller', 'body', 'transform'),
 		isUpdateSystem = true
 	}, movement)
@@ -30,6 +31,19 @@ function movement:process(e, dt)
 
 	if e.controller.upward then
 		e.body.acceleration.y = e.controller.speed
+	end
+
+	-- Reset flying state
+	if e.body.grounded then
+		e.controller.flying = false
+	end
+
+	-- Reset dashing state
+	if e.controller.dashing and self.dash_timer > 0.3 then
+		e.controller.dashing = false
+		self.dash_timer = 0
+	elseif e.controller.dashing then
+		self.dash_timer = self.dash_timer + dt
 	end
 
 	-- Jump velocity

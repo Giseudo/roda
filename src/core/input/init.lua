@@ -13,8 +13,10 @@ function input:init()
 	self.scheme = {
 		keyboard = {
 			jump = '',
-			up = 'space',
-			down = 'down',
+			fire = 'space',
+			turn = 'lshift',
+			up = '',
+			down = '',
 			left = 'left',
 			right = 'right'
 		},

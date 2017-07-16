@@ -14,6 +14,11 @@ function world:init()
 		self:add(e)
 		self:refresh()
 	end)
+
+	Roda.bus:register('world/remove', function(e)
+		self:remove(e)
+		self:refresh()
+	end)
 end
 
 return setmetatable(world, {

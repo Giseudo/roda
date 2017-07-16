@@ -24,11 +24,13 @@ function render:process(e, dt)
 	e.sprite.batch:set(
 		e.sprite.id,
 		e.sprite.quads[e.sprite.frame],
-		e.transform.position.x - e.sprite.width / 2 * e.transform.scale.x,
-		e.transform.position.y - e.sprite.height / 2 * e.transform.scale.y,
-		0,
+		e.transform.position.x,
+		e.transform.position.y,
+		e.transform.rotation,
 		e.transform.scale.x,
-		e.transform.scale.y
+		e.transform.scale.y,
+		e.sprite.width / 2,
+		e.sprite.height / 2
 	)
 end
 

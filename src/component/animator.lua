@@ -16,11 +16,12 @@ function animator:new(name, start, length)
 	return setmetatable(o, animator)
 end
 
-function animator:add_animation(name, start, length)
+function animator:add_animation(name, start, length, speed)
 	self.animations[name] = {
 		name = name,
 		start = start,
-		length = length
+		length = length,
+		speed = speed or self.speed
 	}
 end
 
