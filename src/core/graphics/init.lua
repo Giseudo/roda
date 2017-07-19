@@ -22,9 +22,25 @@ function graphics:init()
 		self.width * self.scale,
 		self.height * self.scale,
 		{
-			display = 1
+			display = 1,
+			vsync = true
 		}
 	)
+	love.window.setTitle('Sparkle')
+
+	Roda.bus:register('world/clear', function()
+		for i, batch in pairs(self.batches) do
+			batch:clear()
+			self.batches[i] = nil
+		end
+	end)
+
+	Roda.bus:register('world/clear/entities', function()
+		for i, batch in pairs(self.batches) do
+			batch:clear()
+			self.batches[i] = nil
+		end
+	end)
 end
 
 function graphics:get_batch(batch)
@@ -40,7 +56,7 @@ function graphics:add_batch(batch, file)
 	if self.batches[batch] == nil then
 		local image = love.graphics.newImage(file)
 
-		self.batches[batch] = love.graphics.newSpriteBatch(image, 3000)
+		self.batches[batch] = love.graphics.newSpriteBatch(image, 10000)
 	end
 
 	return self.batches[batch]

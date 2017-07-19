@@ -6,6 +6,7 @@ function body:new(velocity, acceleration, friction, jump_velocity)
 		acceleration = acceleration or Vector(0, 0),
 		friction = friction or Vector(0, 0),
 		jump_velocity = jump_velocity or 10,
+		kinematic = false,
 		grounded = false
 	}, { __index = self })
 end

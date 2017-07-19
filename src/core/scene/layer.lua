@@ -35,6 +35,19 @@ function layer:add_tile(tile, x, y)
 	self:update_tile(x, y)
 end
 
+function layer:remove_tile(x, y)
+	local tile = self.tiles[x][y]
+
+	self.tiles[x][y] = nil
+
+	self:update_tile(x, y + 1) -- North
+	self:update_tile(x, y - 1) -- South
+	self:update_tile(x - 1, y) -- West
+	self:update_tile(x + 1, y) -- East
+
+	return tile
+end
+
 function layer:get_tile(x, y)
 	if x > 0 and x < self.columns + 1 then
 		if y >= 0 and y <= self.rows + 1 then

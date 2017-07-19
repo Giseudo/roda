@@ -7,8 +7,9 @@ block.__index = block
 
 function block:new(position, tiles, size)
 	local o = {
+		name = 'block',
 		size = size,
-		blocks = {}
+		tiles = tiles
 	}
 
 	o.transform = Transform(position)

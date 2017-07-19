@@ -44,6 +44,9 @@ function editor:init()
 			if key == 'e' then
 				self.entities.show_window = not self.entities.show_window
 			end
+			if key == 's' then
+				Roda.bus:emit('scene/save', 'entities')
+			end
 		end
 	end)
 
@@ -105,7 +108,9 @@ function editor:draw()
 	-- Menu
 	if imgui.BeginMainMenuBar() then
 		if imgui.BeginMenu('File') then
-			imgui.MenuItem('Test')
+			imgui.MenuItem('New', 'CTRL+N')
+			imgui.MenuItem('Save', 'CTRL+S')
+			imgui.MenuItem('Quit')
 			imgui.EndMenu()
 		end
 		if imgui.BeginMenu('World') then

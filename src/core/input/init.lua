@@ -15,21 +15,31 @@ function input:init()
 			jump = '',
 			fire = 'space',
 			turn = 'lshift',
-			up = '',
-			down = '',
+			up = 'up',
+			down = 'down',
 			left = 'left',
 			right = 'right'
 		},
-		joystick = {}
+		joystick = {
+			jump = 0,
+			fire = 16,
+			turn = 15,
+			up = 0,
+			down = 0,
+			left = 8,
+			right = 6
+		}
 	}
 end
 
 function input:update(dt)
 	-- Key pressed
 	function love.keypressed(key)
-		for i, other in pairs(self.scheme.keyboard) do
-			if key == other then
-				Roda.bus:emit('input/pressed', i)
+		if Roda.state == 'game' then
+			for i, other in pairs(self.scheme.keyboard) do
+				if key == other then
+					Roda.bus:emit('input/pressed', i)
+				end
 			end
 		end
 		Roda.bus:emit('input/keyboard/pressed', key)
@@ -37,18 +47,64 @@ function input:update(dt)
 
 	-- Key released
 	function love.keyreleased(key)
-		for i, other in pairs(self.scheme.keyboard) do
-			if key == other then
-				Roda.bus:emit('input/released', i)
+		if Roda.state == 'game' then
+			for i, other in pairs(self.scheme.keyboard) do
+				if key == other then
+					Roda.bus:emit('input/released', i)
+				end
 			end
 		end
 		Roda.bus:emit('input/keyboard/released', key)
 	end
 
-	-- Key pressing
-	for i, key in pairs(self.scheme.keyboard) do
-		if love.keyboard.isDown(key) then
-			Roda.bus:emit('input/pressing', i)
+	if Roda.state == 'game' then
+		-- Key pressing
+		for i, key in pairs(self.scheme.keyboard) do
+			if love.keyboard.isDown(key) then
+				Roda.bus:emit('input/pressing', i)
+			end
+		end
+	end
+
+	-- Joystick pressed
+	function love.joystickpressed(joystick, button)
+		if Roda.state == 'game' then
+			for i, other in pairs(self.scheme.joystick) do
+				if button == other then
+					Roda.bus:emit('input/pressed', i)
+				end
+			end
+		end
+		Roda.bus:emit('input/joystick/pressed', button)
+	end
+
+	-- Joystick released
+	function love.joystickreleased(joystick, button)
+
+		for i, other in pairs(self.scheme.joystick) do
+			if button == other then
+				Roda.bus:emit('input/released', i)
+			end
+		end
+		Roda.bus:emit('input/joystick/released', button)
+	end
+
+	local joysticks = love.joystick.getJoysticks()
+	for k, joystick in ipairs(joysticks) do
+		-- Joystick pressing
+		for i, button in pairs(self.scheme.joystick) do
+			if joystick:isDown(button) then
+				Roda.bus:emit('input/pressing', i)
+			end
+		end
+
+		-- Joystick axis
+		local horizontal, vertical = joystick:getAxes()
+
+		if horizontal == - 1 then
+			Roda.bus:emit('input/pressing', 'left')
+		elseif horizontal == 1 then
+			Roda.bus:emit('input/pressing', 'right')
 		end
 	end
 
@@ -79,9 +135,16 @@ function input:update(dt)
 	if love.mouse.isDown(1) then
 		Roda.bus:emit('input/mouse/pressing', {
 			position = Roda.scene.camera:get_coords(love.mouse.getX(), love.mouse.getY()),
-			button = 'left'
+			button = 1
 		})
 	end
+	if love.mouse.isDown(2) then
+		Roda.bus:emit('input/mouse/pressing', {
+			position = Roda.scene.camera:get_coords(love.mouse.getX(), love.mouse.getY()),
+			button = 2
+		})
+	end
+
 end
 
 return setmetatable(input, {

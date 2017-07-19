@@ -13,6 +13,10 @@ function movement:new()
 end
 
 function movement:process(e, dt)
+	if Vector.distance(e.transform.position, Roda.scene.camera.transform.position) > 320 then
+		return
+	end
+
 	-- Reset acceleration every frame
 	e.body.acceleration.x = Roda.physics.gravity.x
 
@@ -38,14 +42,6 @@ function movement:process(e, dt)
 		e.controller.flying = false
 	end
 
-	-- Reset dashing state
-	if e.controller.dashing and self.dash_timer > 0.3 then
-		e.controller.dashing = false
-		self.dash_timer = 0
-	elseif e.controller.dashing then
-		self.dash_timer = self.dash_timer + dt
-	end
-
 	-- Jump velocity
 	if e.controller.jumping and e.body.grounded then
 		e.body.velocity.y = e.body.jump_velocity
@@ -60,13 +56,40 @@ function movement:process(e, dt)
 		end
 	end)
 
+	if e.controller.forward or e.controller.backward then
+		if e.transform.facing == 'forward' and e.controller.backward then
+			e.transform.facing = 'backward'
+			e.transform.scale.x = e.transform.scale.x * - 1
+		end
+
+		if e.transform.facing == 'backward' and e.controller.forward then
+			e.transform.facing = 'forward'
+			e.transform.scale.x = e.transform.scale.x * -1
+		end
+	end
+
 	-- Apply friction
 	e.body.acceleration.x = e.body.acceleration.x + e.body.velocity.x * e.body.friction.x
 	e.body.acceleration.y = e.body.acceleration.y + e.body.velocity.y * e.body.friction.y
 
 	-- Equations of motion
-	e.body.velocity = e.body.velocity + e.body.acceleration
+	e.body.velocity = e.body.velocity + e.body.acceleration * dt
 	e.transform.position = e.transform.position + e.body.velocity + 0.5 * e.body.acceleration
+
+	if e.transform.position.y > 120 then
+		e.transform.position.y = 120
+	elseif e.transform.position.y < -120 then
+		Roda.bus:emit('entity/dropped', e)
+	end
+
+	if e.transform.position.x < -4000 then
+		e.transform.position.x = -4000
+	elseif e.transform.position.x > 4000 then
+		e.transform.position.x = 4000
+	end
+
+	-- Reset controller direction
+	e.controller:reset()
 end
 
 return setmetatable(movement, {

@@ -13,6 +13,16 @@ function gravity:new()
 end
 
 function gravity:process(e, dt)
+	if Vector.distance(e.transform.position, Roda.scene.camera.transform.position) > 320 then
+		return
+	end
+
+	if e.body.kinematic then
+		e.body.acceleration.x = 0
+		e.body.acceleration.y = 0
+		return
+	end
+
 	-- Apply gravity force
 	e.body.acceleration.x = Roda.physics.gravity.x
 	e.body.acceleration.y = Roda.physics.gravity.y

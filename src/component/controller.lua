@@ -9,7 +9,10 @@ function controller:new(speed, player)
 			upward = false,
 			downward = false,
 			jumping = false,
+			dashing = false,
+			dash_timer = 0,
 			flying = false,
+			disabled = false,
 			player = player or false
 		},
 		{ __index = controller }

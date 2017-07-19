@@ -11,6 +11,7 @@ function sprite:new(name, file, width, height, frame, columns)
 	o.frame = frame or 0
 	o.columns = columns
 	o.quads = {}
+	o.file = file
 	o.batch = Roda.graphics:add_batch(name, file)
 
 	sprite.create_quads(o)

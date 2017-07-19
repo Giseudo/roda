@@ -16,17 +16,23 @@ function collision:onAdd(e)
 	Roda.bus:emit('physics/quadtree/add', e)
 end
 
+function collision:onRemove(e)
+	Roda.bus:emit('physics/quadtree/remove', e)
+end
+
 function collision:process(e, dt)
 	-- Update shape position
 	e.collider.shape.position = e.transform.position
 
 	-- Check for collisions with entities on quadtree
 	for _, other in pairs(Roda.physics.quadtree) do
-		if e ~= other and e.body ~= nil then
-			self:resolve(e, other)
+		if Vector.distance(other.transform.position, Roda.scene.camera.transform.position) < 700 then
+			if e ~= other and e.body ~= nil then
+				self:resolve(e, other)
 
-			if e.body.velocity.y > 0 then
-				e.body.grounded = false
+				if e.body.velocity.y > 0 then
+					e.body.grounded = false
+				end
 			end
 		end
 	end
@@ -59,16 +65,25 @@ function collision:resolve(first, second)
 				first.transform.position.y = first.transform.position.y + intersect.y
 			end
 
-			-- Check if body is grounded
-			local dy = first.collider.shape:get_bottom() - second.collider.shape.position.y - 1
-			local py = second.collider.shape:get_half().y - math.abs(dy)
-
-			if py > 0 then
-				first.body.grounded = true
-			end
-
 			first.body.velocity.y = 0
 			first.body.acceleration.y = 0
+		end
+
+		-- Check if body is grounded
+		local half = second.collider.shape:get_half()
+		local dx = first.transform.position.x - second.transform.position.x
+		local px = half.x - math.abs(dx)
+		local dy = first.collider.shape:get_bottom() - second.collider.shape.position.y - 1
+		local py = half.y - math.abs(dy)
+
+		if px > 0 and py > 0 then
+			first.body.grounded = true
+		else
+			first.body.grounded = false
+		end
+
+		if second.name == 'hand' and first.body.grounded then
+			-- TODO
 		end
 	end
 end

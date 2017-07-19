@@ -19,6 +19,18 @@ function world:init()
 		self:remove(e)
 		self:refresh()
 	end)
+
+	Roda.bus:register('world/clear', function()
+		Roda.physics.quadtree = {}
+		self:clear()
+		self:refresh()
+	end)
+
+	Roda.bus:register('world/clear/entities', function()
+		Roda.physics.quadtree = {}
+		self:clearEntities()
+		self:refresh()
+	end)
 end
 
 return setmetatable(world, {

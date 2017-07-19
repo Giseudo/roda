@@ -20,8 +20,17 @@ function render:preProcess(dt)
 	Roda.bus:emit('camera/set')
 end
 
+function render:onRemove(e)
+	e.sprite.batch:set(e.sprite.id, 0, 0, 0, 0)
+end
+
 function render:process(e, dt)
-	e.sprite.batch:set(
+	if e == nil then
+		return
+	end
+
+	if Vector.distance(e.transform.position, Roda.scene.camera.transform.position) < 470 then
+		e.sprite.batch:set(
 		e.sprite.id,
 		e.sprite.quads[e.sprite.frame],
 		e.transform.position.x,
@@ -31,12 +40,29 @@ function render:process(e, dt)
 		e.transform.scale.y,
 		e.sprite.width / 2,
 		e.sprite.height / 2
-	)
+		)
+	else
+		e.sprite.batch:set(e.sprite.id, 0, 0, 0, 0)
+	end
+end
+
+function pairsByKeys (t, f)
+	local a = {}
+	for n in pairs(t) do table.insert(a, n) end
+	table.sort(a, f)
+	local i = 0      -- iterator variable
+	local iter = function ()   -- iterator function
+		i = i + 1
+		if a[i] == nil then return nil
+		else return a[i], t[a[i]]
+		end
+	end
+	return iter
 end
 
 function render:postProcess(dt)
 	-- Draw sprite batches
-	for _, batch in pairs(Roda.graphics.batches) do
+	for key, batch in pairsByKeys(Roda.graphics.batches) do
 		love.graphics.draw(batch)
 	end
 
