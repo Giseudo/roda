@@ -13,7 +13,7 @@ function gravity:new()
 end
 
 function gravity:process(e, dt)
-	if Vector.distance(e.transform.position, Roda.scene.camera.transform.position) > 320 then
+	if math.abs(e.transform.position.x - Game.sparkle.transform.position.x) > 300 then
 		return
 	end
 

@@ -29,7 +29,7 @@ function render:process(e, dt)
 		return
 	end
 
-	if Vector.distance(e.transform.position, Roda.scene.camera.transform.position) < 470 then
+	if math.abs(e.transform.position.x - Roda.scene.camera.transform.position.x) < 300 then
 		e.sprite.batch:set(
 		e.sprite.id,
 		e.sprite.quads[e.sprite.frame],

@@ -66,9 +66,11 @@ function core:run()
 			end
 
 			if key == 'space' or key == 'return' then
+				Roda.scene.camera.transform.position.x = -3700
 				if menu_index == 0 then
 					intro_index = 0
 					intro_timer = 0
+					Roda.bus:emit('scene/load', 'entities')
 					Roda.state = 'game'
 				elseif menu_index == 1 then
 					love.event.quit()
@@ -85,6 +87,7 @@ function core:run()
 
 			if key == 'space' or key == 'return' then
 				Roda.retry = false
+				Roda.scene.camera.transform.position.x = -3700
 				if retry_index == 0 then
 					Roda.bus:emit('scene/load', 'entities')
 					Roda.state = 'game'

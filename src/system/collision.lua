@@ -24,15 +24,17 @@ function collision:process(e, dt)
 	-- Update shape position
 	e.collider.shape.position = e.transform.position
 
+	if math.abs(e.transform.position.x - Game.sparkle.transform.position.x) > 300 then
+		return
+	end
+
 	-- Check for collisions with entities on quadtree
 	for _, other in pairs(Roda.physics.quadtree) do
-		if Vector.distance(other.transform.position, Roda.scene.camera.transform.position) < 700 then
-			if e ~= other and e.body ~= nil then
-				self:resolve(e, other)
+		if e ~= other and e.body ~= nil then
+			self:resolve(e, other)
 
-				if e.body.velocity.y > 0 then
-					e.body.grounded = false
-				end
+			if e.body.velocity.y > 0 then
+				e.body.grounded = false
 			end
 		end
 	end
@@ -67,6 +69,10 @@ function collision:resolve(first, second)
 
 			first.body.velocity.y = 0
 			first.body.acceleration.y = 0
+		end
+
+		if first.kinematic then
+			return
 		end
 
 		-- Check if body is grounded

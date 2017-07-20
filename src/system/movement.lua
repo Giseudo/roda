@@ -13,7 +13,7 @@ function movement:new()
 end
 
 function movement:process(e, dt)
-	if Vector.distance(e.transform.position, Roda.scene.camera.transform.position) > 320 then
+	if math.abs(e.transform.position.x - Game.sparkle.transform.position.x) > 300 then
 		return
 	end
 
@@ -76,10 +76,12 @@ function movement:process(e, dt)
 	e.body.velocity = e.body.velocity + e.body.acceleration * dt
 	e.transform.position = e.transform.position + e.body.velocity + 0.5 * e.body.acceleration
 
-	if e.transform.position.y > 120 then
-		e.transform.position.y = 120
-	elseif e.transform.position.y < -120 then
-		Roda.bus:emit('entity/dropped', e)
+	if e.name ~= 'skull' and e.name ~= 'bomb' then
+		if e.transform.position.y > 120 then
+			e.transform.position.y = 120
+		elseif e.transform.position.y < -120 then
+			Roda.bus:emit('entity/dropped', e)
+		end
 	end
 
 	if e.transform.position.x < -4000 then

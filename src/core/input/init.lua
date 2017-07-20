@@ -20,10 +20,19 @@ function input:init()
 			left = 'left',
 			right = 'right'
 		},
-		joystick = {
+		osx = {
 			jump = 0,
 			fire = 16,
 			turn = 15,
+			up = 0,
+			down = 0,
+			left = 8,
+			right = 6
+		},
+		joystick = {
+			jump = 0,
+			fire = 12,
+			turn = 0,
 			up = 0,
 			down = 0,
 			left = 8,
@@ -80,7 +89,6 @@ function input:update(dt)
 
 	-- Joystick released
 	function love.joystickreleased(joystick, button)
-
 		for i, other in pairs(self.scheme.joystick) do
 			if button == other then
 				Roda.bus:emit('input/released', i)
