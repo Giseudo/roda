@@ -23,10 +23,11 @@ function graphics:init()
 		self.height * self.scale,
 		{
 			display = 1,
-			vsync = true
+			vsync = false
 		}
 	)
 	love.window.setTitle('Sparkle')
+	love.window.setIcon(love.image.newImageData('icon.png'))
 
 	Roda.bus:register('world/clear', function()
 		for i, batch in pairs(self.batches) do

@@ -10,7 +10,6 @@ function editor:new()
 	local o = {
 		map = EditorMap(),
 		entities = EditorEntities(),
-		active = true
 	}
 
 	return setmetatable(o, editor)
@@ -21,34 +20,47 @@ function editor:init()
 	self.entities:init()
 
 	Roda.bus:register('input/keyboard/pressed', function(key)
-		if self.active == true then
-			if love.keyboard.isDown('lctrl') then
-				-- Shortcuts
-				if key == 'd' then
-					if Roda.debug == true then
-						Roda.debug = false
-					else
-						Roda.debug = true
-					end
+		if love.keyboard.isDown('lctrl') and love.keyboard.isDown('lshift') then
+			if key == 'p' then
+				if Roda.state == 'game' then
+					Roda.state = 'editor'
+					Roda.debug = true
+					Roda.bus:emit('scene/save', 'temp')
+					Game:unbind()
+				else
+					Roda.bus:emit('scene/save', 'temp')
+					Roda.state = 'game'
+					Roda.debug = false
+					Game:bind()
 				end
+			end
 
-				-- Camera inputs
-				if key == 'z' then
-					Roda.bus:emit('camera/zoom', 1)
+			if key == 'd' then
+				if Roda.debug == true then
+					Roda.debug = false
+				else
+					Roda.debug = true
 				end
-				if key == 'x' then
-					Roda.bus:emit('camera/zoom', -1)
-				end
+			end
 
-				if key == 'm' then
-					self.map.show_window = not self.map.show_window
-				end
-				if key == 'e' then
-					self.entities.show_window = not self.entities.show_window
-				end
-				if key == 's' then
-					Roda.bus:emit('scene/save', 'entities')
-				end
+			-- Camera inputs
+			if key == 'z' then
+				Roda.bus:emit('camera/zoom', 1)
+			end
+			if key == 'x' then
+				Roda.bus:emit('camera/zoom', -1)
+			end
+		end
+
+		if love.keyboard.isDown('lctrl') then
+			if key == 'm' then
+				self.map.show_window = not self.map.show_window
+			end
+			if key == 'e' then
+				self.entities.show_window = not self.entities.show_window
+			end
+			if key == 's' then
+				Roda.bus:emit('scene/save', 'entities')
 			end
 		end
 	end)

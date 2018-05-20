@@ -148,10 +148,6 @@ function core:draw()
 		end
 	love.graphics.setCanvas()
 
-	if self.debug then
-		self.editor:draw()
-	end
-
 	if self.retry then
 		Roda:set_shader('default')
 		love.graphics.setColor(0, 0, 0, 140)
@@ -195,7 +191,7 @@ function core:draw()
 	end
 
 	if Roda.state == 'ending' then
-		love.graphics.clear(100, 100, 120, 255)
+		love.graphics.clear(38, 38, 38, 255)
 		Roda:set_shader('default')
 		love.graphics.draw(
 			Game.ending.batch:getTexture(),
@@ -224,6 +220,10 @@ function core:draw()
 			Roda.scene.camera.transform.position.x = -3700
 			Roda.state = 'intro'
 		end
+	end
+
+	if self.debug then
+		self.editor:draw()
 	end
 end
 

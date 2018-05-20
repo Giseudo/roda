@@ -18,15 +18,15 @@ function movement:process(e, dt)
 	end
 
 	-- Reset acceleration every frame
-	e.body.acceleration.x = Roda.physics.gravity.x
+	e.body.acceleration.x = e.body.acceleration.x + Roda.physics.gravity.x
 
 	-- Check movement direction
 	if e.controller.forward then
-		e.body.acceleration.x = e.controller.speed + Roda.physics.gravity.x
+		e.body.acceleration.x = e.body.acceleration.x + e.controller.speed + Roda.physics.gravity.x
 	end
 
 	if e.controller.backward then
-		e.body.acceleration.x = -e.controller.speed + Roda.physics.gravity.x
+		e.body.acceleration.x = e.body.acceleration.x - e.controller.speed + Roda.physics.gravity.x
 	end
 
 	if e.controller.downward then

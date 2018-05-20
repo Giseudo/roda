@@ -158,6 +158,9 @@ function scene:init()
 		Roda.bus:emit('world/clear/entities')
 		Game:place_entities()
 
+		-- Load file from assets instead from AppData
+		file = 'assets/levels/entities'
+
 		-- Load entities
 		if love.filesystem.exists(file .. '.txt') then
 			for line in love.filesystem.lines(file .. '.txt') do
